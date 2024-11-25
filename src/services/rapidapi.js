@@ -1,16 +1,22 @@
-// Forecast Weather API:
-export const weatherUrl =
-  "https://weatherapi-com.p.rapidapi.com/forecast.json?q=";
-
-// Search/Autocomplete API:
-export const searchWeatherUrl =
-  "https://weatherapi-com.p.rapidapi.com/search.json?q=";
-
-// Fetch Options:
-export const fetchOptions = {
-  method: "GET",
-  headers: {
-    "X-RapidAPI-Host": import.meta.env.VITE_RAPIDAPI_HOST,
-    "X-RapidAPI-Key": import.meta.env.VITE_RAPIDAPI_KEY,
-  },
-};
+export const fetchWeatherData = async () => {
+    const url = 'https://weatherapi-com.p.rapidapi.com/forecast.json?q=Granada';
+    const options = {
+      method: 'GET',
+      headers: {
+        'x-rapidapi-key': import.meta.env.VITE_RAPIDAPI_KEY,
+        'x-rapidapi-host': import.meta.env.VITE_RAPIDAPI_HOST
+      }
+    };
+  
+    try {
+      const response = await fetch(url, options);
+      if (!response.ok) throw new Error('Network response was not ok');
+      const data = await response.json();
+      console.log(data)
+      return data; // Cambiado a JSON
+    } catch (error) {
+      console.error(error);
+      return null; // Manejo de errores
+    }
+  };
+  

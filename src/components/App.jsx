@@ -1,12 +1,22 @@
-import { useState } from 'react'
-import reactLogo from './../assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useState, useEffect } from 'react';
+import reactLogo from '../assets/react.svg';
+import viteLogo from '/vite.svg';
+import { fetchWeatherData } from '../services/rapidapi.js';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [weatherData, setWeatherData] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await fetchWeatherData();
+      setWeatherData(data); // Guarda los datos en el estado
+    };
+
+    fetchData();
+  }, []); // Ejecuta una vez al montar el componente
 
   return (
-    <>
+    <div>
       <div>
         <a href="https://vite.dev" target="_blank">
           <img src={viteLogo} className="logo" alt="Vite logo" />
@@ -15,20 +25,20 @@ function App() {
           <img src={reactLogo} className="logo react" alt="React logo" />
         </a>
       </div>
-      <h1>Vite + React</h1>
+      <h1>Weather App</h1>
       <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
+        {weatherData ? (
+          <div>
+            <h2>Location: {weatherData.location.name}</h2>
+            <p>Temperature: {weatherData.current.temp_c}°C</p>
+            <p>Condition: {weatherData.current.condition.text}</p>
+          </div>
+        ) : (
+          <p>Loading weather data...</p>
+        )}
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    </div>
+  );
 }
 
-export default App
+export default App;
