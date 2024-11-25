@@ -14,7 +14,7 @@ function Home() {
   }, []); // Ejecuta una vez al montar el componente
 
   return (
-    <div>
+    <div className='dark:text-white'>
       <div className="flex flex-col items-center justify-center w-full h-full">
         {weatherData ? (
           <div className='flex flex-col items-center justify-center w-full h-full'>

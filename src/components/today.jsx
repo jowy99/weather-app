@@ -21,11 +21,11 @@ function Home() {
             {weatherData.forecast.forecastday[0].hour.map((hour, index) => (
               <div
                 key={index}
-                className='flex flex-col items-center space-y-2 p-4 border-2 border-gray-800 rounded-md'
+                className='flex flex-col items-center space-y-2 p-4 border-2 border-gray-800 dark:border-white rounded-md'
               >
-                <p>{hour.time.split(' ')[1]}</p>
+                <p className='dark:text-white'>{hour.time.split(' ')[1]}</p>
                 <img src={hour.condition.icon} alt={hour.condition.text} />
-                <p>{hour.temp_c}°C</p>
+                <p className='dark:text-white'>{hour.temp_c}°C</p>
               </div>
             ))}
           </div>
