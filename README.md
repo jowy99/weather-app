@@ -1,5 +1,5 @@
 <div align="center">
-<img src="assets/images/weather-app-banner.png" alt="weateher Banner" width="80%"/>
+<img src="https://raw.githubusercontent.com/USERNAME/REPOSITORY/main/assets/images/weathr-banner.png" alt="weathr Banner" width="80%"/>
 <p>
 <h3><b>A beautifully weather app</b></h3>
 </p>
