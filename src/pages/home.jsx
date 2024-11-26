@@ -6,7 +6,7 @@ import Footer from '../layout/footer.jsx'
 function Home() {
   return (
     <StrictMode>
-        <div className='dark:bg-zinc-800'>
+        <div className='dark:bg-zinc-800 h-scren'>
             <RightNow />
             <Today />
             <Footer />
