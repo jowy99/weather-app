@@ -1,13 +1,18 @@
 import { useState, useEffect } from 'react';
 import { fetchWeatherData } from '../services/rapidapi.js';
+import { getWeatherIcon } from '../utils/weatherIcons.js';
 
 function Home() {
   const [weatherData, setWeatherData] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
-      const data = await fetchWeatherData();
-      setWeatherData(data); // Guarda los datos en el estado
+      try {
+        const data = await fetchWeatherData();
+        setWeatherData(data);
+      } catch (error) {
+        console.error("Error fetching weather data:", error);
+      }
     };
 
     fetchData();
@@ -18,7 +23,7 @@ function Home() {
       <div className="flex flex-col items-center justify-center w-full h-full">
         {weatherData ? (
           <div className='flex flex-col items-center justify-center w-full h-full'>
-            <img className='w-2/4 h-2/4' src={weatherData.current.condition.icon} alt="" />
+            <img className='w-2/4 h-2/4' src={getWeatherIcon(weatherData.current.condition.code, weatherData.current.condition.is_day)} alt="" />
             <div className='flex flex-col items-center justify-center space-y-2'>
                 <h2 className='text-2xl font-bold'>{weatherData.location.name}</h2>
                 <div className='flex flex-col items-center justify-center'>
