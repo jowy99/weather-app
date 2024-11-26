@@ -1,16 +1,10 @@
-import { StrictMode } from 'react'
-import RightNow from '../components/rightnow.jsx'
-import Today from '../components/today.jsx'
-import Footer from '../layout/footer.jsx'
+import { StrictMode } from 'react';
+import Body from '../layout/body.jsx';
 
 function Home() {
   return (
     <StrictMode>
-        <div className='dark:bg-zinc-800 h-scren'>
-            <RightNow />
-            <Today />
-            <Footer />
-        </div>
+        <Body/>
     </StrictMode>
   );
 }
