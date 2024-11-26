@@ -1,9 +1,8 @@
 <div align="center">
-<img src="https://i.postimg.cc/YqNZrpWx/weathr-banner.png" alt="weathr Banner" width="80%"/>
+<img src="assets/images/weather-app-banner.png" alt="weateher Banner" width="80%"/>
 <p>
 <h3><b>A beautifully weather app</b></h3>
 </p>
-<p><a href="https://www.twitch.tv/midudev">midudev</a> Hackathon - June 2022</p>
 </div>
 
 ## 📦 Packages:
@@ -55,12 +54,12 @@ npm install
 npm run dev
 ```
 
-5. 🥳 Ready! Open the browser and write localhost:3000.
+5. 🥳 Ready! Open the browser and write localhost:5173.
 
 ## 🚀 Deploy on Cloudflare Pages:
 
-- [weathr.pages.dev](https://weather.joelarnaud.com/).
+- [weather.joelarnaud.com](https://weather.joelarnaud.com/)
 
 ## 🔑 License:
 
-- [MIT License](https://github.com/jowy99/weather-appp/blob/main/LICENSE).
+- [MIT License](https://github.com/jowy99/weather-app/blob/main/LICENSE)
