@@ -20,10 +20,10 @@ function Home() {
 
   return (
     <div className='dark:text-white'>
-      <div className="flex flex-col items-center justify-center w-full h-full">
+      <div className="flex flex-col items-center justify-center">
         {weatherData ? (
           <div className='flex flex-col items-center justify-center w-full h-full'>
-            <img className='w-2/4 h-2/4' src={getWeatherIcon(weatherData.current.condition.code, weatherData.current.condition.is_day)} alt="" />
+            <img className='w-2/4 h-2/4' src={getWeatherIcon(weatherData.current.condition.code, weatherData.current.condition.is_day)} alt={weatherData.current.condition.text} />
             <div className='flex flex-col items-center justify-center space-y-2'>
                 <h2 className='text-2xl font-bold'>{weatherData.location.name}</h2>
                 <div className='flex flex-col items-center justify-center'>
