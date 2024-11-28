@@ -1,5 +1,5 @@
 <div align="center">
-<img src="https://github.com/jowy99/weather-app/blob/main/public/weather-app-banner.png" alt="weathr Banner" width="80%"/>
+<img src="https://github.com/jowy99/weather-app/blob/main/public/weather-app-banner.png" alt="Weather App Banner" width="80%"/>
 <p>
 <h3><b>A beautifully weather app</b></h3>
 </p>
@@ -40,7 +40,7 @@ VITE_RAPIDAPI_HOST=
 - Go to your RapidApi Dashboard: [/developer/dashboard](https://rapidapi.com/developer/dashboard).
 - In the left sidebar -> "Default Apps" -> Click on your api -> "Security" and copy the generated Key in the .env file.
 
-🔨 [All RapidApi and fetcher configuration here](https://github.com/pheralb/weathr/tree/main/src/services).
+🔨 [All RapidApi and fetcher configuration here](https://github.com/jowy99/weather-app/tree/main/src/services).
 
 3. Install dependencies:
 
