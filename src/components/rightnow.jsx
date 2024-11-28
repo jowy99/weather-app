@@ -1,22 +1,13 @@
-import { useState, useEffect } from 'react';
-import { fetchWeatherData } from '../services/rapidapi.js';
+import useWeatherData from '../hooks/useWeatherData.js';
 import { getWeatherIcon } from '../utils/weatherIcons.js';
 
 function Home() {
-  const [weatherData, setWeatherData] = useState(null);
+  const { weatherData, error } = useWeatherData();
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const data = await fetchWeatherData();
-        setWeatherData(data);
-      } catch (error) {
-        console.error("Error fetching weather data:", error);
-      }
-    };
-
-    fetchData();
-  }, []); // Ejecuta una vez al montar el componente
+  if (error)
+  {
+    return <p>Error fetching weather data.</p>
+  }
 
   return (
     <div className="relative flex flex-col items-center justify-center dark:text-white">

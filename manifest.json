@@ -4,8 +4,8 @@
     "display": "minimal-ui",
     "scope": "/",
     "start_url": "/",
-    "name": "weathr",
-    "short_name": "weathr",
+    "name": "weatherapp",
+    "short_name": "weatherapp",
     "description": "A beautifully weather app",
     "icons": [
         {
