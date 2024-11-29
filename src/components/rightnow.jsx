@@ -16,7 +16,7 @@ function Home() {
           <div className='flex flex-col items-center w-full max-w-md p-6'>
             <img 
               className='w-64 h-64' 
-              src={getWeatherIcon(weatherData.current.condition.code, weatherData.current.condition.is_day)} 
+              src={getWeatherIcon(weatherData.current.condition.code, weatherData.current.is_day)} 
               alt={weatherData.current.condition.text} 
             />
             <div className='flex flex-col items-center justify-center mt-4 space-y-2'>
