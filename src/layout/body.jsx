@@ -1,15 +1,17 @@
 import Now from '../components/rightnow.jsx';
 import Today from '../components/today.jsx';
 import Footer from './footer.jsx';
-import Astro from '../components/dia.jsx';
+import Extras from '../components/dia.jsx';
+import Astro from '../components/astro.jsx';
 
 function Body() {
     return (
-        <main className="font-AlbertSans antialiased dark:bg-zinc-800 min-h-screen flex flex-col">
-            <section className="w-full flex-grow space-y-8 lg:flex lg:flex-col">
+        <main className="pt-4 font-AlbertSans antialiased min-h-screen flex flex-col dark:bg-zinc-800">
+            <section className="w-full flex-grow lg:flex lg:flex-col">
                 <Now />
-                <Astro />
+                <Extras />
                 <Today />
+                <Astro />
             </section>
             <Footer />
         </main>
