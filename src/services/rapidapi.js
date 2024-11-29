@@ -19,4 +19,3 @@ export const fetchWeatherData = async () => {
       return null; // Manejo de errores
     }
   };
-  

@@ -13,21 +13,15 @@ function Home() {
     <div className="relative flex flex-col items-center justify-center dark:text-white">
       {weatherData ? (
         <div className='flex flex-col items-center justify-center w-full h-full'>
-          <h2 className='text-2xl font-bold'>{weatherData.location.name}</h2>
+          <img className='w-2/4 h-2/4' src={getWeatherIcon(weatherData.current.condition.code, weatherData.current.condition.is_day)} alt={weatherData.current.condition.text} />
           <div className='flex flex-col items-center justify-center space-y-2'>
-            <img className='w-2/4 h-2/4' src={getWeatherIcon(weatherData.current.condition.code, weatherData.current.condition.is_day)} alt={weatherData.current.condition.text} />
             <div className='flex flex-col items-center justify-center'>
-                <p className='text-4xl font-bold'>{weatherData.current.temp_c}</p>
-                <p className='text-blue-400 font-medium'>{weatherData.current.condition.text}</p>
+                <h2 className='text-2xl font-bold'>{weatherData.location.name}</h2>
+                <p className='text-5xl font-bold w-fit'>{weatherData.current.temp_c}°C</p>
+                <p className='text-blue-400 font-xl'>{weatherData.current.condition.text}</p>
                 <div className='flex space-x-4'>
-                    <div className='flex space-x-2'>
-                        <p>Máx:</p>
-                        <p>{weatherData.forecast.forecastday[0].day.maxtemp_c}°C</p>
-                    </div>
-                    <div className='flex space-x-2'>
-                        <p>Mín:</p>
-                        <p>{weatherData.forecast.forecastday[0].day.mintemp_c}°C</p>
-                    </div>
+                  <p><span className='font-medium text-lg'>Máx.</span> {weatherData.forecast.forecastday[0].day.maxtemp_c}°C</p>
+                  <p><span className='font-medium text-lg'>Mín.</span> {weatherData.forecast.forecastday[0].day.mintemp_c}°C</p>
                 </div>
             </div>
           </div>
