@@ -3,11 +3,13 @@ import Today from '../components/today.jsx';
 import Footer from './footer.jsx';
 import Extras from '../components/dia.jsx';
 import Astro from '../components/astro.jsx';
+import Navbar from '../components/nav.jsx';
 
 function Body() {
     return (
         <main className="pt-4 font-AlbertSans antialiased min-h-screen flex flex-col dark:bg-zinc-800">
             <section className="w-full flex-grow lg:flex lg:flex-col">
+                <Navbar/>
                 <Now />
                 <Extras />
                 <Today />
