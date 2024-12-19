@@ -20,17 +20,26 @@ function Home() {
               alt={weatherData.current.condition.text} 
             />
             <div className='flex flex-col items-center justify-center mt-4 space-y-2'>
+
+              {/* Nombre ciudad */}
               <h2 className='text-2xl font-extrabold'>{weatherData.location.name}</h2>
-              <p className='text-5xl font-bold'>{weatherData.current.temp_c}&deg;C</p>
+
+              {/* Temperatura ciudad */}
+              <p className='text-5xl font-bold'>{Math.round(weatherData.current.temp_c)}&deg;C</p>
+
+              {/* Condiciones meteorologicas ciudad */}
               <p className='text-xl font-medium text-blue-500'>{weatherData.current.condition.text}</p>
+
+              {/* Max y Min temperatura */}
               <div className='flex space-x-8 mt-4'>
                 <p className='text-lg font-medium'>
-                  <span className='font-semibold text-blue-600'>Max:</span> {weatherData.forecast.forecastday[0].day.maxtemp_c}&deg;C
+                  <span className='font-semibold text-blue-600'>Max:</span> {Math.round(weatherData.forecast.forecastday[0].day.maxtemp_c)}&deg;C
                 </p>
                 <p className='text-lg font-medium'>
-                  <span className='font-semibold text-blue-600'>Min:</span> {weatherData.forecast.forecastday[0].day.mintemp_c}&deg;C
+                  <span className='font-semibold text-blue-600'>Min:</span> {Math.round(weatherData.forecast.forecastday[0].day.mintemp_c)}&deg;C
                 </p>
               </div>
+              
             </div>
           </div>
         </div>

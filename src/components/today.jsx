@@ -47,7 +47,7 @@ function Today() {
                   />
                 </div>
                 <p className="text-lg font-bold text-gray-800 dark:text-gray-200">
-                  {hour.temp_c}&deg;C
+                  {Math.round(hour.temp_c)}&deg;C
                 </p>
               </div>
             </div>
