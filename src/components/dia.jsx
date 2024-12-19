@@ -24,12 +24,12 @@ function Astro() {
             <BigCard
                 title="Thermal sensation"
                 icon="/weather-icons/wi_thermometer.svg"
-                value={`${weatherData.current.feelslike_c} °C`}
+                value={`${Math.round(weatherData.current.feelslike_c)} °C`}
             />
             <BigCard
                 title="Wind"
                 icon="/weather-icons/wi_wind.svg"
-                value={`${weatherData.current.wind_kph} km/h`}
+                value={`${Math.round(weatherData.current.wind_kph)} km/h`}
             />
             <BigCard
                 title="Preassure"
