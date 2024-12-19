@@ -1,7 +1,7 @@
 const weatherIcons = {
   1000: { day: "/weather-icons/wi_clear-day.svg", night: "/weather-icons/wi_clear-night.svg" },
   1003: { day: "/weather-icons/wi_partly-cloudy-day.svg", night: "/weather-icons/wi_partly-cloudy-night.svg" },
-  1006: { day: "/weather-icons/wi_cloudy.svg", night: "/weather-icons/wi_cloudy-night.svg" },
+  1006: { day: "/weather-icons/wi_cloudy.svg", night: "/weather-icons/wi_cloudy.svg" },
   1009: { day: "/weather-icons/wi_overcast.svg", night: "/weather-icons/wi_overcast-night.svg" },
   1030: { day: "/weather-icons/wi_fog-day.svg", night: "/weather-icons/wi_fog-night.svg" },
   1063: { day: "/weather-icons/wi_rain.svg", night: "/weather-icons/wi_rain.svg" },
