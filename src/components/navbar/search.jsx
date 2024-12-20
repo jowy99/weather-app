@@ -4,12 +4,13 @@ import useWeatherData from "../../hooks/useWeatherData";
 
 const Search = () => {
   const { fetchWeather } = useWeatherData();
-  const [city, setCity] = useState("");
+  const [query, setQuery] = useState("");
   const [suggestions, setSuggestions] = useState([]);
 
+  // Manejar cambios en el input
   const handleInputChange = async (e) => {
     const value = e.target.value;
-    setCity(value);
+    setQuery(value);
 
     if (value.trim() !== "") {
       const cities = await fetchCitySuggestions(value);
@@ -19,17 +20,20 @@ const Search = () => {
     }
   };
 
+  // Manejar selección de una ciudad
   const handleCitySelect = (cityName) => {
-    fetchWeather(cityName);
-    setCity("");
-    setSuggestions([]);
+    console.log("Selected city:", cityName); // Verificar el valor
+    fetchWeather(cityName); // Llama a fetchWeather con el nombre seleccionado
+    setQuery(""); // Limpia el input
+    setSuggestions([]); // Limpia las sugerencias
   };
+  
 
   return (
     <div className="relative">
       <input
         type="text"
-        value={city}
+        value={query}
         onChange={handleInputChange}
         placeholder="Search city..."
         className="px-4 py-2 border rounded-md w-full dark:bg-gray-800 dark:text-white"
