@@ -1,37 +1,53 @@
 import { useState } from "react";
-import PropTypes from "prop-types";
+import Toggle from "./navbar/toggle.jsx";
+import Search from "./navbar/search.jsx";
+import Saved from "./navbar/saved.jsx";
 
 const Navbar = () => {
-  const [darkMode, setDarkMode] = useState(
-    document.documentElement.classList.contains("dark")
-  );
-
-  const handleThemeToggle = () => {
-    const isDarkMode = !darkMode;
-    setDarkMode(isDarkMode);
-
-    if (isDarkMode) {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-  };
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <nav className="flex justify-between items-center px-6 py-4 bg-primary dark:bg-dark dark:text-light">
-      <h1 className="text-lg font-bold dark:text-white">Weather App</h1>
-      <button
-        onClick={handleThemeToggle}
-        className="bg-secondary py-2 px-4 rounded-lg shadow-md hover:bg-gray-700 hover:text-white transition duration-300 dark:text-white dark:bg-gray-700"
-      >
-        {darkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}
-      </button>
+    <nav className="bg-white dark:bg-gray-900 shadow-md">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center h-16">
+          {/* Logo */}
+          <div className="text-xl font-semibold text-blue-600 dark:text-blue-400">
+            WeatherApp
+          </div>
+
+          {/* Menú hamburguesa */}
+          <div className="lg:hidden">
+            <button
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className="text-gray-500 dark:text-gray-300 focus:outline-none"
+            >
+              {isMenuOpen ? "✖" : "☰"}
+            </button>
+          </div>
+
+          {/* Contenido del navbar */}
+          <div className="hidden lg:flex lg:items-center lg:space-x-8">
+            <Search />
+            <Toggle />
+            <Saved />
+          </div>
+        </div>
+
+        {/* Desplegable en móviles */}
+        <div
+          className={`${
+            isMenuOpen ? "max-h-screen" : "max-h-0"
+          } overflow-hidden transition-max-height duration-300 ease-in-out lg:hidden`}
+        >
+          <div className="flex flex-col space-y-4 mt-4">
+            <Search />
+            <Toggle />
+            <Saved />
+          </div>
+        </div>
+      </div>
     </nav>
   );
-};
-
-Navbar.propTypes = {
-  toggleTheme: PropTypes.func,
 };
 
 export default Navbar;
