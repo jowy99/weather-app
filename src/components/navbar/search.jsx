@@ -1,9 +1,8 @@
+import PropTypes from "prop-types";
 import { useState } from "react";
 import { fetchCitySuggestions } from "../../services/fetcher";
-import useWeatherData from "../../hooks/useWeatherData";
 
-const Search = () => {
-  const { fetchWeather } = useWeatherData();
+const Search = ({ onCitySelect }) => {
   const [query, setQuery] = useState("");
   const [suggestions, setSuggestions] = useState([]);
 
@@ -23,11 +22,10 @@ const Search = () => {
   // Manejar selección de una ciudad
   const handleCitySelect = (cityName) => {
     console.log("Selected city:", cityName); // Verificar el valor
-    fetchWeather(cityName); // Llama a fetchWeather con el nombre seleccionado
+    onCitySelect(cityName); // Llama a onCitySelect en lugar de fetchWeather
     setQuery(""); // Limpia el input
     setSuggestions([]); // Limpia las sugerencias
   };
-  
 
   return (
     <div className="relative">
@@ -53,6 +51,11 @@ const Search = () => {
       )}
     </div>
   );
+};
+
+// Validación de las props
+Search.propTypes = {
+  onCitySelect: PropTypes.func.isRequired, // onCitySelect debe ser una función
 };
 
 export default Search;
