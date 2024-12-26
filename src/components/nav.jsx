@@ -1,10 +1,10 @@
-import PropTypes from "prop-types"; // Importar prop-types
+import PropTypes from "prop-types";
 import { useState } from "react";
 import Toggle from "./navbar/toggle.jsx";
 import Search from "./navbar/search.jsx";
 import Saved from "./navbar/saved.jsx";
 
-const Navbar = ({ onCitySelect }) => { // Recibe onCitySelect como prop
+const Navbar = ({ onCitySelect, savedLocations }) => { // Solo mantenemos las props necesarias
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
@@ -30,7 +30,10 @@ const Navbar = ({ onCitySelect }) => { // Recibe onCitySelect como prop
           <div className="hidden lg:flex lg:items-center lg:space-x-8">
             <Search onCitySelect={onCitySelect} /> {/* Pasamos la prop aquí */}
             <Toggle />
-            <Saved />
+            <Saved
+              onCitySelect={onCitySelect}
+              savedLocations={savedLocations} // Pasamos las ubicaciones guardadas
+            />
           </div>
         </div>
 
@@ -41,9 +44,12 @@ const Navbar = ({ onCitySelect }) => { // Recibe onCitySelect como prop
           } overflow-hidden transition-max-height duration-300 ease-in-out lg:hidden`}
         >
           <div className="flex flex-col space-y-4 mt-4">
-            <Search onCitySelect={onCitySelect} /> {/* También aquí */}
+            <Search onCitySelect={onCitySelect} />
             <Toggle />
-            <Saved />
+            <Saved
+              onCitySelect={onCitySelect}
+              savedLocations={savedLocations} // Pasamos las ubicaciones guardadas
+            />
           </div>
         </div>
       </div>
@@ -53,7 +59,8 @@ const Navbar = ({ onCitySelect }) => { // Recibe onCitySelect como prop
 
 // Validación de las props
 Navbar.propTypes = {
-  onCitySelect: PropTypes.func.isRequired, // Aseguramos que sea una función y obligatoria
+  onCitySelect: PropTypes.func.isRequired,
+  savedLocations: PropTypes.array.isRequired, // Aseguramos que savedLocations sea obligatorio
 };
 
 export default Navbar;
