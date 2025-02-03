@@ -1,11 +1,11 @@
-import { useRef, useState, useEffect, useCallback } from "react";
+import { useRef, useState, useEffect } from "react";
 import PropTypes from "prop-types";
 
-const Saved = ({ onCitySelect, savedLocations, setSavedLocations }) => {
+const Saved = ({ onCitySelect, savedLocations, removeLocation }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
-  
-  // Cerrar el menú al hacer clic fuera o presionar Esc
+
+  // Cerrar el menú al hacer clic fuera o presionar ESC
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -19,67 +19,56 @@ const Saved = ({ onCitySelect, savedLocations, setSavedLocations }) => {
 
     document.addEventListener("mousedown", handleClickOutside);
     document.addEventListener("keydown", handleKeyDown);
-    
+
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
       document.removeEventListener("keydown", handleKeyDown);
     };
   }, []);
 
-  // Manejar la selección de una ciudad
-  const handleSelect = useCallback((city) => {
-    onCitySelect(city);
-    setIsDropdownOpen(false);
-  }, [onCitySelect]);
-
-  // Manejar la eliminación de una ciudad
-  const handleDelete = (e, city) => {
-    e.stopPropagation(); // Evita que se seleccione la ciudad al eliminarla
-    const updatedLocations = savedLocations.filter((location) => location !== city);
-    setSavedLocations(updatedLocations);
-    localStorage.setItem("savedLocations", JSON.stringify(updatedLocations));
-  };
-
   return (
-    <div className="relative mt-4 lg:mt-0" ref={dropdownRef}>
+    <div className="relative" ref={dropdownRef}>
+      {/* Botón principal */}
       <button
         onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-        className="px-4 py-2 text-white transition-all bg-blue-500 rounded-md focus:outline-none hover:bg-blue-600"
+        className="flex items-center px-4 py-2 text-sm font-medium text-white transition-all bg-blue-600 rounded-md hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600"
         aria-haspopup="true"
         aria-expanded={isDropdownOpen}
       >
-        Saved Locations
+        📍 Saved Locations
       </button>
 
+      {/* Dropdown */}
       {isDropdownOpen && (
-        <ul
-          className="absolute z-10 w-48 mt-2 transition-opacity bg-white border border-gray-300 rounded-md shadow-lg dark:bg-gray-800"
-          role="menu"
-        >
+        <div className="absolute right-0 z-50 w-64 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg dark:bg-gray-800 dark:border-gray-700">
           {savedLocations.length > 0 ? (
-            savedLocations.map((city, index) => (
-              <li
-                key={index}
-                className="flex items-center justify-between px-4 py-2 transition-all cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700"
-                role="menuitem"
-                tabIndex={0}
-                onClick={() => handleSelect(city)}
-                onKeyDown={(e) => e.key === "Enter" && handleSelect(city)}
-              >
-                <span className="text-gray-800 dark:text-gray-200">{city}</span>
-                <button
-                  onClick={(e) => handleDelete(e, city)}
-                  className="text-red-500 transition hover:text-red-700"
-                  aria-label={`Remove ${city}`}
+            <ul className="divide-y divide-gray-200 dark:divide-gray-700">
+              {savedLocations.map((city) => (
+                <li
+                  key={city}
+                  className="flex items-center justify-between px-4 py-2 text-sm text-gray-800 cursor-pointer dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
+                  onClick={() => onCitySelect(city)} // Seleccionar ciudad
                 >
-                  ✖
-                </button>
-              </li>
-            ))
+                  <span>{city}</span>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation(); // Evita seleccionar la ciudad al eliminar
+                      removeLocation(city); // Elimina la ciudad
+                    }}
+                    className="px-2 py-1 text-xs font-semibold text-red-500 bg-red-100 rounded-md dark:bg-red-900 dark:text-red-400 hover:bg-red-200 dark:hover:bg-red-800"
+                    aria-label={`Remove ${city}`}
+                  >
+                    ✖
+                  </button>
+                </li>
+              ))}
+            </ul>
           ) : (
-            <p className="px-4 py-2 text-gray-500 dark:text-gray-400">No saved locations yet.</p>
+            <p className="px-4 py-2 text-sm text-gray-500 dark:text-gray-400">
+              No saved locations yet.
+            </p>
           )}
-        </ul>
+        </div>
       )}
     </div>
   );
@@ -88,7 +77,7 @@ const Saved = ({ onCitySelect, savedLocations, setSavedLocations }) => {
 Saved.propTypes = {
   onCitySelect: PropTypes.func.isRequired,
   savedLocations: PropTypes.array.isRequired,
-  setSavedLocations: PropTypes.func.isRequired, // Ahora permite actualizar la lista
+  removeLocation: PropTypes.func.isRequired,
 };
 
 export default Saved;

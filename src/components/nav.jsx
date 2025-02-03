@@ -3,16 +3,22 @@ import { useState, useEffect } from "react";
 import Toggle from "./navbar/toggle.jsx";
 import Search from "./navbar/search.jsx";
 import Saved from "./navbar/saved.jsx";
+import SaveButton from "./UI/Buttons/SaveButton.jsx";
 
-const Navbar = ({ onCitySelect, savedLocations }) => {
+const Navbar = ({
+  onCitySelect = () => {}, // Función predeterminada
+  savedLocations = [], // Array vacío por defecto
+  addLocation = () => {}, // Función predeterminada
+  removeLocation = () => {}, // Función predeterminada
+  currentLocation = "", // Cadena vacía por defecto
+}) => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const [setIsSavedOpen] = useState(false);
 
   useEffect(() => {
     const handleKeyDown = (event) => {
       if ((event.ctrlKey || event.metaKey) && event.key === "k") {
         event.preventDefault();
-        setIsSearchOpen(true); // Abre el modal
+        setIsSearchOpen(true); // Abre el modal de búsqueda
       }
     };
 
@@ -42,12 +48,18 @@ const Navbar = ({ onCitySelect, savedLocations }) => {
               />
             </div>
 
-            {/* Toggle y Localizaciones a la derecha */}
+            {/* Toggle, Localizaciones y Botón de Guardar */}
             <div className="flex items-center space-x-4">
               <Toggle />
               <Saved
                 onCitySelect={onCitySelect}
                 savedLocations={savedLocations}
+                removeLocation={removeLocation}
+              />
+              <SaveButton
+                isSaved={savedLocations.includes(currentLocation)}
+                onSave={() => addLocation(currentLocation)}
+                onRemove={() => removeLocation(currentLocation)}
               />
             </div>
           </div>
@@ -65,15 +77,6 @@ const Navbar = ({ onCitySelect, savedLocations }) => {
 
             {/* Tema - Cambiar tema */}
             <Toggle />
-
-            {/* Localizaciones guardadas */}
-            <button
-              onClick={() => setIsSavedOpen(true)}
-              className="text-gray-500 transition hover:text-gray-800 dark:text-gray-300 dark:hover:text-white"
-              aria-label="Saved Locations"
-            >
-              📍
-            </button>
           </div>
         </div>
 
@@ -91,6 +94,9 @@ const Navbar = ({ onCitySelect, savedLocations }) => {
 Navbar.propTypes = {
   onCitySelect: PropTypes.func.isRequired,
   savedLocations: PropTypes.array.isRequired,
+  addLocation: PropTypes.func.isRequired,
+  removeLocation: PropTypes.func.isRequired,
+  currentLocation: PropTypes.string.isRequired,
 };
 
 export default Navbar;
