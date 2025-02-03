@@ -30,20 +30,20 @@ const Navbar = ({ onCitySelect, savedLocations }) => {
           </div>
 
           {/* Contenido en pantallas grandes */}
-          <div className="justify-between hidden w-full lg:flex lg:items-center lg:space-x-8">
+          <div className="hidden w-full lg:flex lg:items-center lg:justify-between">
             {/* Buscador centrado */}
             <div className="flex justify-center flex-1">
               <input
                 type="text"
                 placeholder="Search city..."
                 onClick={() => setIsSearchOpen(true)}
-                className="w-full px-4 py-2 border rounded-md cursor-pointer dark:bg-gray-800 dark:text-white"
+                className="w-1/2 px-3 py-2.5 border rounded-lg cursor-pointer text-sm dark:bg-gray-800 dark:text-white"
                 readOnly
               />
             </div>
 
             {/* Toggle y Localizaciones a la derecha */}
-            <div className="flex items-center space-x-6">
+            <div className="flex items-center space-x-4">
               <Toggle />
               <Saved
                 onCitySelect={onCitySelect}
