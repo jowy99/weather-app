@@ -1,66 +1,96 @@
 import PropTypes from "prop-types";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Toggle from "./navbar/toggle.jsx";
 import Search from "./navbar/search.jsx";
 import Saved from "./navbar/saved.jsx";
 
-const Navbar = ({ onCitySelect, savedLocations }) => { // Solo mantenemos las props necesarias
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+const Navbar = ({ onCitySelect, savedLocations }) => {
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [setIsSavedOpen] = useState(false);
+
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if ((event.ctrlKey || event.metaKey) && event.key === "k") {
+        event.preventDefault();
+        setIsSearchOpen(true); // Abre el modal
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, []);
 
   return (
-    <nav>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
+    <nav className="w-full">
+      <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <div className="text-xl font-semibold dark:text-white text-gray-800">
+          <div className="text-xl font-semibold text-gray-800 dark:text-white">
             WeatherApp
           </div>
 
-          {/* Menú hamburguesa */}
-          <div className="lg:hidden">
+          {/* Contenido en pantallas grandes */}
+          <div className="justify-between hidden w-full lg:flex lg:items-center lg:space-x-8">
+            {/* Buscador centrado */}
+            <div className="flex justify-center flex-1">
+              <input
+                type="text"
+                placeholder="Search city..."
+                onClick={() => setIsSearchOpen(true)}
+                className="w-full px-4 py-2 border rounded-md cursor-pointer dark:bg-gray-800 dark:text-white"
+                readOnly
+              />
+            </div>
+
+            {/* Toggle y Localizaciones a la derecha */}
+            <div className="flex items-center space-x-6">
+              <Toggle />
+              <Saved
+                onCitySelect={onCitySelect}
+                savedLocations={savedLocations}
+              />
+            </div>
+          </div>
+
+          {/* Iconos en responsive */}
+          <div className="flex items-center space-x-6 lg:hidden">
+            {/* Lupa - Abrir buscador */}
             <button
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="text-gray-500 dark:text-gray-300 focus:outline-none"
+              onClick={() => setIsSearchOpen(true)}
+              className="text-gray-500 transition hover:text-gray-800 dark:text-gray-300 dark:hover:text-white"
+              aria-label="Search"
             >
-              {isMenuOpen ? "✖" : "☰"}
+              🔍
+            </button>
+
+            {/* Tema - Cambiar tema */}
+            <Toggle />
+
+            {/* Localizaciones guardadas */}
+            <button
+              onClick={() => setIsSavedOpen(true)}
+              className="text-gray-500 transition hover:text-gray-800 dark:text-gray-300 dark:hover:text-white"
+              aria-label="Saved Locations"
+            >
+              📍
             </button>
           </div>
-
-          {/* Contenido del navbar */}
-          <div className="hidden lg:flex lg:items-center lg:space-x-8">
-            <Search onCitySelect={onCitySelect} /> {/* Pasamos la prop aquí */}
-            <Toggle />
-            <Saved
-              onCitySelect={onCitySelect}
-              savedLocations={savedLocations} // Pasamos las ubicaciones guardadas
-            />
-          </div>
         </div>
 
-        {/* Desplegable en móviles */}
-        <div
-          className={`${
-            isMenuOpen ? "max-h-screen" : "max-h-0"
-          } overflow-hidden transition-max-height duration-300 ease-in-out lg:hidden`}
-        >
-          <div className="flex flex-col space-y-4 mt-4">
-            <Search onCitySelect={onCitySelect} />
-            <Toggle />
-            <Saved
-              onCitySelect={onCitySelect}
-              savedLocations={savedLocations} // Pasamos las ubicaciones guardadas
-            />
-          </div>
-        </div>
+        {/* Modales */}
+        <Search
+          isOpen={isSearchOpen}
+          onClose={() => setIsSearchOpen(false)}
+          onCitySelect={onCitySelect}
+        />
       </div>
     </nav>
   );
 };
 
-// Validación de las props
 Navbar.propTypes = {
   onCitySelect: PropTypes.func.isRequired,
-  savedLocations: PropTypes.array.isRequired, // Aseguramos que savedLocations sea obligatorio
+  savedLocations: PropTypes.array.isRequired,
 };
 
 export default Navbar;
