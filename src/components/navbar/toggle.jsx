@@ -1,123 +1,65 @@
 import { useState, useEffect } from "react";
 
-const Toggle = () => {
+const ThemeToggle = () => {
+  // Estado del tema
   const [isDarkMode, setIsDarkMode] = useState(false);
 
+  // Detectar el tema por defecto del sistema
   useEffect(() => {
-    document.documentElement.classList.toggle("dark", isDarkMode);
-  }, [isDarkMode]);
+    const systemPrefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    setIsDarkMode(systemPrefersDark);
+    document.documentElement.classList.toggle("dark", systemPrefersDark);
+  }, []);
+
+  // Alternar el tema
+  const toggleTheme = () => {
+    setIsDarkMode((prev) => {
+      const newTheme = !prev;
+      document.documentElement.classList.toggle("dark", newTheme);
+      return newTheme;
+    });
+  };
 
   return (
     <button
-      onClick={() => setIsDarkMode(!isDarkMode)}
-      className={`relative w-14 h-8 flex items-center rounded-full p-1 transition-colors ${
-        isDarkMode ? "bg-blue-600" : "bg-yellow-500"
-      }`}
+      onClick={toggleTheme}
+      aria-label="Toggle theme"
+      className="flex items-center justify-center w-10 h-10 rounded-full focus:outline-none"
     >
-      {/* Icono del sol (modo claro) */}
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 24 24"
-        fill="currentColor"
-        className={`absolute w-4 h-4 text-white left-2 transition-opacity ${
-          isDarkMode ? "opacity-0" : "opacity-100"
-        }`}
-      >
-        <circle cx="12" cy="12" r="5" />
-        <line
-          x1="12"
-          y1="1"
-          x2="12"
-          y2="4"
-          stroke="currentColor"
-          strokeWidth="2"
-        />
-        <line
-          x1="12"
-          y1="20"
-          x2="12"
-          y2="23"
-          stroke="currentColor"
-          strokeWidth="2"
-        />
-        <line
-          x1="4.22"
-          y1="4.22"
-          x2="5.64"
-          y2="5.64"
-          stroke="currentColor"
-          strokeWidth="2"
-        />
-        <line
-          x1="18.36"
-          y1="18.36"
-          x2="19.78"
-          y2="19.78"
-          stroke="currentColor"
-          strokeWidth="2"
-        />
-        <line
-          x1="1"
-          y1="12"
-          x2="4"
-          y2="12"
-          stroke="currentColor"
-          strokeWidth="2"
-        />
-        <line
-          x1="20"
-          y1="12"
-          x2="23"
-          y2="12"
-          stroke="currentColor"
-          strokeWidth="2"
-        />
-        <line
-          x1="4.22"
-          y1="19.78"
-          x2="5.64"
-          y2="18.36"
-          stroke="currentColor"
-          strokeWidth="2"
-        />
-        <line
-          x1="18.36"
-          y1="5.64"
-          x2="19.78"
-          y2="4.22"
-          stroke="currentColor"
-          strokeWidth="2"
-        />
-      </svg>
-
-      {/* Icono de la luna (modo oscuro) */}
-      <div
-        className={`absolute w-4 h-4 flex items-center justify-center right-2 top-1/2 transform -translate-y-1/2 transition-opacity ${
-          isDarkMode ? "opacity-100" : "opacity-0"
-        }`}
-      >
+      {isDarkMode ? (
+        // Sol (Modo oscuro)
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          className="w-4 h-4 text-white"
+          fill="currentColor"
+          className="w-6 h-6 text-yellow-500"
         >
-          <path
-            d="M21 12.79A9 9 0 1111.21 3a7 7 0 109.79 9.79z"
-          />
+          <circle cx="12" cy="12" r="5" />
+          <line x1="12" y1="1" x2="12" y2="4" stroke="currentColor" strokeWidth="2" />
+          <line x1="12" y1="20" x2="12" y2="23" stroke="currentColor" strokeWidth="2" />
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" stroke="currentColor" strokeWidth="2" />
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" stroke="currentColor" strokeWidth="2" />
+          <line x1="1" y1="12" x2="4" y2="12" stroke="currentColor" strokeWidth="2" />
+          <line x1="20" y1="12" x2="23" y2="12" stroke="currentColor" strokeWidth="2" />
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" stroke="currentColor" strokeWidth="2" />
+          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" stroke="currentColor" strokeWidth="2" />
         </svg>
-      </div>
-
-      {/* Bola del toggle */}
-      <div
-        className={`h-6 w-6 bg-white rounded-full shadow-md transform transition-transform ${
-          isDarkMode ? "translate-x-0" : "translate-x-6"
-        }`}
-      ></div>
+      ) : (
+        // Luna (Modo claro)
+        <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="currentColor"
+        className="w-6 h-6 text-gray-800"
+        >
+        <path
+            d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"
+            fill="currentColor"
+        />
+        </svg>
+      )}
     </button>
   );
 };
 
-export default Toggle;
+export default ThemeToggle;

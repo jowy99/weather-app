@@ -36,8 +36,10 @@ function Body() {
   };
 
   return (
-    <main className="pt-4 font-AlbertSans antialiased min-h-screen flex flex-col dark:bg-zinc-800">
-      <section className="w-full flex-grow lg:flex lg:flex-col">
+    <main className="relative flex flex-col min-h-screen pt-4 antialiased font-AlbertSans">
+      {/* Fondo dinámico para modo claro y oscuro */}
+      <div className="absolute top-0 z-[-2] h-full min-h-screen w-screen rotate-180 transform bg-fixed bg-white dark:bg-gray-900 bg-[radial-gradient(60%_120%_at_50%_50%,hsla(0,0%,100%,0)_0,rgba(173,216,230,0.5)_100%)] dark:bg-[radial-gradient(60%_120%_at_50%_50%,hsla(0,0%,0%,0)_0,rgba(38,70,83,0.5)_100%)]"></div>
+      <section className="flex-grow w-full lg:flex lg:flex-col">
         {/* Pasamos el controlador de búsqueda y ubicaciones al Navbar */}
         <Navbar
           onCitySelect={handleCityChange}
