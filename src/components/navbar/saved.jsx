@@ -1,11 +1,10 @@
 import { useRef, useState, useEffect } from "react";
 import PropTypes from "prop-types";
 
-const Saved = ({ onCitySelect, savedLocations, removeLocation }) => {
+const Saved = ({ onCitySelect, savedLocations, removeLocation, isCompact = false }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
 
-  // Cerrar el menú al hacer clic fuera o presionar ESC
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -27,33 +26,48 @@ const Saved = ({ onCitySelect, savedLocations, removeLocation }) => {
   }, []);
 
   return (
-    <div className="relative" ref={dropdownRef}>
+    <div className={`relative ${isCompact ? "w-8 h-8" : ""}`} ref={dropdownRef}>
       {/* Botón principal */}
       <button
         onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-        className="flex items-center px-4 py-2 text-sm font-medium text-white transition-all bg-blue-600 rounded-md hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600"
+        className={`${
+          isCompact
+            ? "text-gray-500 hover:text-gray-800 dark:text-gray-300 dark:hover:text-white"
+            : "flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600"
+        }`}
         aria-haspopup="true"
         aria-expanded={isDropdownOpen}
       >
-        📍 Saved Locations
+        {isCompact ? "📍" : "Saved Locations"}
       </button>
 
       {/* Dropdown */}
       {isDropdownOpen && (
-        <div className="absolute right-0 z-50 w-64 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg dark:bg-gray-800 dark:border-gray-700">
+        <div
+          className={`absolute ${
+            isCompact ? "right-0 w-40" : "right-0 w-64"
+          } mt-2 bg-white border border-gray-200 rounded-lg shadow-lg dark:bg-gray-800 dark:border-gray-700 z-[100] pointer-events-auto`}
+        >
           {savedLocations.length > 0 ? (
             <ul className="divide-y divide-gray-200 dark:divide-gray-700">
               {savedLocations.map((city) => (
                 <li
                   key={city}
-                  className="flex items-center justify-between px-4 py-2 text-sm text-gray-800 cursor-pointer dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
-                  onClick={() => onCitySelect(city)} // Seleccionar ciudad
+                  className="flex items-center justify-between px-4 py-2 text-sm cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700"
                 >
-                  <span>{city}</span>
+                  <button
+                    className="flex-1 text-left text-gray-800 dark:text-gray-200"
+                    onClick={() => {
+                      onCitySelect(city); // Seleccionar ciudad
+                      setTimeout(() => setIsDropdownOpen(false), 100); // Pequeño retraso para evitar cierre prematuro
+                    }}
+                  >
+                    {city}
+                  </button>
                   <button
                     onClick={(e) => {
-                      e.stopPropagation(); // Evita seleccionar la ciudad al eliminar
-                      removeLocation(city); // Elimina la ciudad
+                      e.stopPropagation(); // Evitar seleccionar la ciudad al eliminar
+                      removeLocation(city); // Eliminar ciudad
                     }}
                     className="px-2 py-1 text-xs font-semibold text-red-500 bg-red-100 rounded-md dark:bg-red-900 dark:text-red-400 hover:bg-red-200 dark:hover:bg-red-800"
                     aria-label={`Remove ${city}`}
@@ -78,6 +92,7 @@ Saved.propTypes = {
   onCitySelect: PropTypes.func.isRequired,
   savedLocations: PropTypes.array.isRequired,
   removeLocation: PropTypes.func.isRequired,
+  isCompact: PropTypes.bool,
 };
 
 export default Saved;
