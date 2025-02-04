@@ -21,7 +21,6 @@ const useWeatherData = () => {
       const cachedData = getFromCache(cacheKey);
       if (cachedData) {
         setWeatherData({ ...cachedData }); // Forzar reactividad
-        console.log("Loaded from cache:", cachedData);
         setLoading(false);
         return;
       }
@@ -31,7 +30,6 @@ const useWeatherData = () => {
       if (data) {
         saveToCache(cacheKey, data, CACHE_DURATION);
         setWeatherData({ ...data }); // Forzar reactividad
-        console.log("Fetched new data:", data);
       }
     } catch (err) {
       console.error("Error fetching weather data:", err);
@@ -74,7 +72,8 @@ const useWeatherData = () => {
     weatherData,
     location,
     fetchWeather,
-    loading,
+    fetchCurrentLocationWeather, // Asegúrate de incluir esta línea
+    loading, // Asegúrate de incluir esta línea
     error,
   };
 };
