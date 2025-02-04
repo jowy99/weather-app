@@ -9,7 +9,13 @@ import useWeatherData from "../hooks/useWeatherData";
 
 function Body() {
   const [city, setCity] = useState(""); // Ciudad seleccionada o buscada
-  const { weatherData, error, fetchWeather } = useWeatherData();
+  const {
+    weatherData,
+    error,
+    fetchWeather,
+    fetchCurrentLocationWeather, // Asegúrate de incluir esto
+    loading, // Asegúrate de incluir esto
+  } = useWeatherData();
 
   // Estado para ubicaciones guardadas, inicializamos con localStorage
   const [savedLocations, setSavedLocations] = useState(() => {
@@ -49,6 +55,8 @@ function Body() {
           addLocation={handleSaveLocation} // Añadir ubicación
           removeLocation={handleRemoveLocation} // Eliminar ubicación
           currentLocation={city} // Ciudad seleccionada o buscada
+          fetchCurrentLocationWeather={fetchCurrentLocationWeather} // Función para obtener ubicación actual
+          loading={loading} // Estado de carga
         />
         <Now weatherData={weatherData} error={error} />
         <Extras weatherData={weatherData} error={error} />
