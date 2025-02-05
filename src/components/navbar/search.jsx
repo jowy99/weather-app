@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 import { useState, useEffect, useRef } from "react";
 import { fetchCitySuggestions } from "../../services/fetcher";
+import Magnify from "../UI/icons/magnifying.jsx";
 
 const Search = ({ onCitySelect, isOpen, onClose }) => {
   const [query, setQuery] = useState("");
@@ -68,7 +69,7 @@ const Search = ({ onCitySelect, isOpen, onClose }) => {
             className="w-full max-w-2xl p-6"
           >
             <div className="flex items-center gap-2 px-4 py-2 bg-gray-100 border border-gray-800 rounded-md shadow-lg dark:bg-gray-700 focus-within:ring-2 focus-within:ring-blue-500">
-              <span className="dark:text-gray-400">🔍</span>
+              <Magnify color="#ffffff" className="w-6 h-6 transition-transform hover:scale-110" />
               <input
                 type="text"
                 value={query}
