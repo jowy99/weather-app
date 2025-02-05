@@ -69,7 +69,7 @@ const Search = ({ onCitySelect, isOpen, onClose }) => {
             className="w-full max-w-2xl p-6"
           >
             <div className="flex items-center gap-2 px-4 py-2 bg-gray-100 border border-gray-800 rounded-md shadow-lg dark:bg-gray-700 focus-within:ring-2 focus-within:ring-blue-500">
-              <Magnify color="#ffffff" className="w-6 h-6 transition-transform hover:scale-110" />
+              <Magnify className="w-6 h-6 text-gray-800 dark:text-gray-100" />
               <input
                 type="text"
                 value={query}
@@ -101,7 +101,7 @@ const Search = ({ onCitySelect, isOpen, onClose }) => {
             )}
 
             {suggestions.length === 0 && query.trim() && (
-              <p className="mt-4 text-gray-500">No cities found</p>
+              <p className="mt-4 font-semibold text-red-700 dark:text-red-500 drop-shadow-lg">No cities found</p>
             )}
           </div>
         </div>
