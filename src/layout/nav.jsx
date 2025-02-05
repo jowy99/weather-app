@@ -1,12 +1,12 @@
 import PropTypes from "prop-types";
 import { useState, useEffect } from "react";
-import Toggle from "./navbar/toggle.jsx";
-import Search from "./navbar/search.jsx";
-import Saved from "./navbar/saved.jsx";
-import SaveButton from "./UI/Buttons/SaveButton.jsx";
-import Magnify from "./UI/icons/magnifying.jsx";
-import AddLocationIcon from "./UI/icons/addLocation.jsx";
-import RemoveLocationIcon from "./UI/icons/removeLocation.jsx";
+import Toggle from "../components/UI/navbar/toggle.jsx";
+import Search from "../components/UI/navbar/search.jsx";
+import Saved from "../components/UI/navbar/saved.jsx";
+import SaveButton from "../components/UI/Buttons/SaveButton.jsx";
+import Magnify from "../components/UI/icons/magnifying.jsx";
+import AddLocationIcon from "../components/UI/icons/addLocation.jsx";
+import RemoveLocationIcon from "../components/UI/icons/removeLocation.jsx";
 
 const Navbar = ({
   onCitySelect = () => {},

@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import BigCard from './cards/bigcard.jsx';
+import BigCard from '../UI/cards/bigcard.jsx';
 
 function Astro({ weatherData = null, error = null }) { // Recibe weatherData y error como props
   if (error) {
@@ -11,7 +11,7 @@ function Astro({ weatherData = null, error = null }) { // Recibe weatherData y e
   }
 
   return (
-    <div className="p-4 grid grid-cols-2 md:grid-cols-4 gap-4">
+    <div className="grid grid-cols-2 gap-4 p-4 md:grid-cols-4">
       <BigCard
         title="Humidity"
         icon="/weather-icons/wi_humidity.svg"

@@ -1,7 +1,7 @@
 import { useRef, useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import SavedLocationsIcon from "../UI/icons/savedLocation.jsx";
-import Cross from "../UI/icons/cross.jsx";
+import SavedLocationsIcon from "../icons/savedLocation.jsx";
+import Cross from "../icons/cross.jsx";
 
 const Saved = ({ onCitySelect, savedLocations, removeLocation }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);

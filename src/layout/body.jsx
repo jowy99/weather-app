@@ -1,10 +1,10 @@
 import { useState } from "react";
-import Now from "../components/rightnow.jsx";
-import Today from "../components/today.jsx";
+import Now from "../components/blocks/rightnow.jsx";
+import Today from "../components/blocks/today.jsx";
 import Footer from "./footer.jsx";
-import Extras from "../components/dia.jsx";
-import Astro from "../components/astro.jsx";
-import Navbar from "../components/nav.jsx";
+import Extras from "../components/blocks/features.jsx";
+import Astro from "../components/blocks/astro.jsx";
+import Navbar from "./nav.jsx";
 import useWeatherData from "../hooks/useWeatherData";
 
 function Body() {
