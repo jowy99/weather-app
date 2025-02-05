@@ -20,10 +20,10 @@ function Astro({ weatherData = null, error = null }) {
 
   // Datos para las tarjetas (reutilización)
   const astroCardData = [
-    { title: 'Moonrise', icon: '/weather-icons/wi_moonrise.svg', value: weatherData.forecast.forecastday[0].astro.moonrise },
-    { title: 'Moonset', icon: '/weather-icons/wi_moonset.svg', value: weatherData.forecast.forecastday[0].astro.moonset },
-    { title: 'Sunrise', icon: '/weather-icons/wi_sunrise.svg', value: weatherData.forecast.forecastday[0].astro.sunrise },
-    { title: 'Sunset', icon: '/weather-icons/wi_sunset.svg', value: weatherData.forecast.forecastday[0].astro.sunset },
+    { title: 'Salida de la luna', icon: '/weather-icons/wi_moonrise.svg', value: weatherData.forecast.forecastday[0].astro.moonrise },
+    { title: 'Puesta de la luna', icon: '/weather-icons/wi_moonset.svg', value: weatherData.forecast.forecastday[0].astro.moonset },
+    { title: 'Amanecer', icon: '/weather-icons/wi_sunrise.svg', value: weatherData.forecast.forecastday[0].astro.sunrise },
+    { title: 'Atardecer', icon: '/weather-icons/wi_sunset.svg', value: weatherData.forecast.forecastday[0].astro.sunset },
   ];
 
   return (

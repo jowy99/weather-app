@@ -20,10 +20,10 @@ function Astro({ weatherData = null, error = null }) {
 
   // Datos para las tarjetas (para evitar repetición de código)
   const bigCardData = [
-    { title: 'Humidity', icon: '/weather-icons/wi_humidity.svg', value: `${weatherData.current.humidity} %` },
-    { title: 'Thermal sensation', icon: '/weather-icons/wi_thermometer.svg', value: `${Math.round(weatherData.current.feelslike_c)} °C` },
-    { title: 'Wind', icon: '/weather-icons/wi_wind.svg', value: `${Math.round(weatherData.current.wind_kph)} km/h` },
-    { title: 'Pressure', icon: '/weather-icons/wi_pressure-high.svg', value: `${weatherData.current.pressure_mb} hPa` },
+    { title: 'Humedad', icon: '/weather-icons/wi_humidity.svg', value: `${weatherData.current.humidity} %` },
+    { title: 'Sensación térmica', icon: '/weather-icons/wi_thermometer.svg', value: `${Math.round(weatherData.current.feelslike_c)} °C` },
+    { title: 'Viento', icon: '/weather-icons/wi_wind.svg', value: `${Math.round(weatherData.current.wind_kph)} km/h` },
+    { title: 'Presión', icon: '/weather-icons/wi_pressure-high.svg', value: `${weatherData.current.pressure_mb} hPa` },
   ];
 
   return (
