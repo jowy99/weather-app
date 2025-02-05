@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import { useState, useEffect, useRef } from "react";
-import { fetchCitySuggestions } from "../../services/fetcher";
-import Magnify from "../UI/icons/magnifying.jsx";
+import { fetchCitySuggestions } from "../../../services/fetcher.js";
+import Magnify from "../icons/magnifying.jsx";
 
 const Search = ({ onCitySelect, isOpen, onClose }) => {
   const [query, setQuery] = useState("");

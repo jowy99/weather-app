@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { getWeatherIcon } from '../utils/weatherIcons.js';
+import { getWeatherIcon } from '../../utils/weatherIcons.js';
 
 function Today({ weatherData = null, error = null }) {
   if (error) {
