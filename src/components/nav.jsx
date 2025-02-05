@@ -4,6 +4,9 @@ import Toggle from "./navbar/toggle.jsx";
 import Search from "./navbar/search.jsx";
 import Saved from "./navbar/saved.jsx";
 import SaveButton from "./UI/Buttons/SaveButton.jsx";
+import Magnify from "./UI/icons/magnifying.jsx";
+import AddLocationIcon from "./UI/icons/addLocation.jsx";
+import RemoveLocationIcon from "./UI/icons/removeLocation.jsx";
 
 const Navbar = ({
   onCitySelect = () => {},
@@ -13,8 +16,13 @@ const Navbar = ({
   currentLocation = "",
 }) => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [hovered, setHovered] = useState(false);
+  const [shortcutKey, setShortcutKey] = useState("");
 
   useEffect(() => {
+    const isMac = navigator.platform.toUpperCase().indexOf("MAC") >= 0;
+    setShortcutKey(isMac ? "⌘ K" : "Ctrl K");
+
     const handleKeyDown = (event) => {
       if ((event.ctrlKey || event.metaKey) && event.key === "k") {
         event.preventDefault();
@@ -39,15 +47,27 @@ const Navbar = ({
 
           {/* Contenido en pantallas grandes */}
           <div className="hidden w-full lg:flex lg:items-center lg:justify-between">
-            <div className="flex justify-center flex-1">
-              <input
-                type="text"
-                placeholder="Search city..."
-                onClick={() => setIsSearchOpen(true)}
-                className="w-1/2 px-3 py-2.5 border rounded-lg cursor-pointer text-sm dark:bg-gray-800 dark:text-white"
-                readOnly
-              />
+            <div className="relative flex justify-center flex-1">
+              {/* Input con iconos dentro */}
+              <div className="relative w-1/2">
+                <input
+                  type="text"
+                  placeholder="Search city..."
+                  onClick={() => setIsSearchOpen(true)}
+                  className="w-full py-2.5 pl-12 pr-16 border rounded-lg cursor-pointer text-sm dark:bg-gray-800 dark:text-white focus:outline-none"
+                  readOnly
+                />
+
+                {/* Icono de lupa dentro del input */}
+                <Magnify className="absolute w-5 h-5 text-gray-400 transform -translate-y-1/2 pointer-events-none left-4 top-1/2 dark:text-gray-500" />
+
+                {/* Tecla de acceso rápido (⌘ K o Ctrl K) dentro del input */}
+                <span className="absolute right-4 top-1/2 transform -translate-y-1/2 text-xs text-gray-500 dark:text-gray-400 bg-gray-200 dark:bg-gray-700 px-2 py-0.5 rounded-md pointer-events-none">
+                  {shortcutKey}
+                </span>
+              </div>
             </div>
+
             <div className="flex items-center space-x-4">
               <Toggle />
               <Saved
@@ -62,53 +82,19 @@ const Navbar = ({
               />
             </div>
           </div>
-
           {/* Iconos en responsive */}
-          <div className="flex items-center justify-center space-x-4 lg:hidden">
+          <div className="flex items-center justify-between p-2 space-x-4 rounded-lg lg:hidden">
             {/* Botón de búsqueda */}
             <button
               onClick={() => setIsSearchOpen(true)}
-              className="text-gray-500 transition hover:text-gray-800 dark:text-gray-300 dark:hover:text-white"
+              className="flex items-center justify-center p-2 text-gray-500 rounded-full hover:bg-gray-200 dark:text-gray-300 dark:hover:bg-gray-700"
               aria-label="Search"
             >
-              🔍
+              <Magnify className="w-6 h-6 transition-transform hover:scale-110" />
             </button>
 
             {/* Botón de tema */}
             <Toggle />
-
-            {/* Botón de guardar ubicación */}
-            <button
-              onClick={isSaved ? () => removeLocation(currentLocation) : () => addLocation(currentLocation)}
-              className="text-red-500 transition hover:text-red-700 dark:text-red-400 dark:hover:text-red-600"
-              aria-label={isSaved ? "Remove from saved locations" : "Save location"}
-            >
-              {isSaved ? (
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="currentColor"
-                  viewBox="0 0 24 24"
-                  className="w-6 h-6"
-                >
-                  <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
-                </svg>
-              ) : (
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  className="w-6 h-6"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M11.049 2.927c.3-.921 1.603-.921 1.902 0a7.994 7.994 0 013.905 3.905c.921.3.921 1.603 0 1.902a7.994 7.994 0 01-3.905 3.905c-.3.921-1.603.921-1.902 0a7.994 7.994 0 01-3.905-3.905c-.921-.3-.921-1.603 0-1.902a7.994 7.994 0 013.905-3.905z"
-                  />
-                </svg>
-              )}
-            </button>
 
             {/* Menú de ubicaciones guardadas */}
             <Saved
@@ -117,6 +103,31 @@ const Navbar = ({
               removeLocation={removeLocation}
               isCompact
             />
+
+            {/* Botón de guardar ubicación con animación */}
+            <button
+              onClick={isSaved ? () => removeLocation(currentLocation) : () => addLocation(currentLocation)}
+              onMouseEnter={() => setHovered(true)}
+              onMouseLeave={() => setHovered(false)}
+              className={`flex items-center justify-center p-2 rounded-full transition-all ${
+                isSaved
+                  ? hovered
+                    ? "bg-red-500 text-white hover:bg-red-600"
+                    : "bg-green-500 text-white hover:bg-green-600"
+                  : "bg-blue-500 text-white hover:bg-blue-600"
+              }`}
+              aria-label={isSaved ? "Remove from saved locations" : "Save location"}
+            >
+              {isSaved ? (
+                hovered ? (
+                  <RemoveLocationIcon className="w-6 h-6" />
+                ) : (
+                  <AddLocationIcon className="w-6 h-6" />
+                )
+              ) : (
+                <AddLocationIcon className="w-6 h-6" />
+              )}
+            </button>
           </div>
         </div>
 

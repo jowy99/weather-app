@@ -1,5 +1,7 @@
 import { useRef, useState, useEffect } from "react";
 import PropTypes from "prop-types";
+import SavedLocationsIcon from "../UI/icons/savedLocation.jsx";
+import Cross from "../UI/icons/cross.jsx";
 
 const Saved = ({ onCitySelect, savedLocations, removeLocation, isCompact = false }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -26,19 +28,20 @@ const Saved = ({ onCitySelect, savedLocations, removeLocation, isCompact = false
   }, []);
 
   return (
-    <div className={`relative ${isCompact ? "w-8 h-8" : ""}`} ref={dropdownRef}>
-      {/* Botón principal */}
+    <div
+      className={`relative flex items-center justify-center ${
+        isCompact ? "w-8 h-8" : ""
+      }`}
+      ref={dropdownRef}
+    >
+      {/* Botón principal con icono */}
       <button
         onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-        className={`${
-          isCompact
-            ? "text-gray-500 hover:text-gray-800 dark:text-gray-300 dark:hover:text-white"
-            : "flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600"
-        }`}
+        className="flex items-center justify-center p-2 text-gray-500 rounded-full hover:bg-gray-200 dark:text-gray-300 dark:hover:bg-gray-700"
         aria-haspopup="true"
         aria-expanded={isDropdownOpen}
       >
-        {isCompact ? "📍" : "Saved Locations"}
+        <SavedLocationsIcon className="w-6 h-6 transition-transform hover:scale-110" />
       </button>
 
       {/* Dropdown */}
@@ -46,7 +49,7 @@ const Saved = ({ onCitySelect, savedLocations, removeLocation, isCompact = false
         <div
           className={`absolute ${
             isCompact ? "right-0 w-40" : "right-0 w-64"
-          } mt-2 bg-white border border-gray-200 rounded-lg shadow-lg dark:bg-gray-800 dark:border-gray-700 z-[100] pointer-events-auto`}
+          } mt-2 bg-white border border-gray-200 rounded-lg shadow-lg dark:bg-gray-800 dark:border-gray-700 z-[100]`}
         >
           {savedLocations.length > 0 ? (
             <ul className="divide-y divide-gray-200 dark:divide-gray-700">
@@ -69,10 +72,10 @@ const Saved = ({ onCitySelect, savedLocations, removeLocation, isCompact = false
                       e.stopPropagation(); // Evitar seleccionar la ciudad al eliminar
                       removeLocation(city); // Eliminar ciudad
                     }}
-                    className="px-2 py-1 text-xs font-semibold text-red-500 bg-red-100 rounded-md dark:bg-red-900 dark:text-red-400 hover:bg-red-200 dark:hover:bg-red-800"
+                    className="flex items-center justify-center px-2 py-1 text-xs font-semibold text-red-500 bg-red-100 rounded-md dark:bg-red-900 dark:text-red-400 hover:bg-red-200 dark:hover:bg-red-800"
                     aria-label={`Remove ${city}`}
                   >
-                    ✖
+                    <Cross className="w-4 h-4 transition-transform hover:scale-110" />
                   </button>
                 </li>
               ))}
