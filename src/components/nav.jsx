@@ -90,7 +90,7 @@ const Navbar = ({
               className="flex items-center justify-center p-2 text-gray-500 rounded-full hover:bg-gray-200 dark:text-gray-300 dark:hover:bg-gray-700"
               aria-label="Search"
             >
-              <Magnify className="w-6 h-6 transition-transform hover:scale-110" />
+              <Magnify className="w-6 h-6" />
             </button>
 
             {/* Botón de tema */}

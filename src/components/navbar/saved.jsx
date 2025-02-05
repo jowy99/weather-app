@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import SavedLocationsIcon from "../UI/icons/savedLocation.jsx";
 import Cross from "../UI/icons/cross.jsx";
 
-const Saved = ({ onCitySelect, savedLocations, removeLocation, isCompact = false }) => {
+const Saved = ({ onCitySelect, savedLocations, removeLocation }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
 
@@ -29,9 +29,7 @@ const Saved = ({ onCitySelect, savedLocations, removeLocation, isCompact = false
 
   return (
     <div
-      className={`relative flex items-center justify-center ${
-        isCompact ? "w-8 h-8" : ""
-      }`}
+      className="relative flex items-center justify-center"
       ref={dropdownRef}
     >
       {/* Botón principal con icono */}
@@ -47,9 +45,7 @@ const Saved = ({ onCitySelect, savedLocations, removeLocation, isCompact = false
       {/* Dropdown */}
       {isDropdownOpen && (
         <div
-          className={`absolute ${
-            isCompact ? "right-0 w-40" : "right-0 w-64"
-          } mt-2 bg-white border border-gray-200 rounded-lg shadow-lg dark:bg-gray-800 dark:border-gray-700 z-[100]`}
+          className={`absolute top-full left-1/2 transform -translate-x-1/2 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg dark:bg-gray-800 dark:border-gray-700 z-50 w-auto max-w-[250px] min-w-[150px]`}
         >
           {savedLocations.length > 0 ? (
             <ul className="divide-y divide-gray-200 dark:divide-gray-700">
@@ -59,7 +55,7 @@ const Saved = ({ onCitySelect, savedLocations, removeLocation, isCompact = false
                   className="flex items-center justify-between px-4 py-2 text-sm cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700"
                 >
                   <button
-                    className="flex-1 text-left text-gray-800 dark:text-gray-200"
+                    className="flex-1 overflow-hidden text-left text-gray-800 text-ellipsis whitespace-nowrap dark:text-gray-200"
                     onClick={() => {
                       onCitySelect(city); // Seleccionar ciudad
                       setTimeout(() => setIsDropdownOpen(false), 100); // Pequeño retraso para evitar cierre prematuro
