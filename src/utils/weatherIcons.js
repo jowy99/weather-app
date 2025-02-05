@@ -9,7 +9,6 @@ const weatherIcons = {
   1069: { day: "/weather-icons/wi_patchy-sleet-day.svg", night: "/weather-icons/wi_patchy-sleet-night.svg" },
   1087: { day: "/weather-icons/wi_thunderstorm-day.svg", night: "/weather-icons/wi_thunderstorm-night.svg" },
   1114: { day: "/weather-icons/wi_blowing-snow-day.svg", night: "/weather-icons/wi_blowing-snow-night.svg" },
-  // Agrega más íconos según los códigos de la API
 };
 
 export const getWeatherIcon = (code, isDay) => {
