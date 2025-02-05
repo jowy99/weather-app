@@ -1,37 +1,36 @@
 import PropTypes from 'prop-types';
-import BigCard from '../UI/cards/bigcard.jsx';
+import BigCard from '../UI/cards/bigcard';
 
-function Astro({ weatherData = null, error = null }) { // Recibe weatherData y error como props
+function Astro({ weatherData = null, error = null }) {
   if (error) {
-    return <p>Error fetching weather data.</p>;
+    return (
+      <p className="p-4 text-lg font-medium text-red-500 dark:text-red-300">
+        Error fetching weather data: {error}
+      </p>
+    );
   }
 
-  if (!weatherData || !weatherData.forecast) {
-    return <p>Loading weather data...</p>;
+  if (!weatherData) {
+    return (
+      <p className="p-32 text-xl font-medium text-gray-500 dark:text-gray-300">
+        Fetching weather data...
+      </p>
+    );
   }
+
+  // Datos para las tarjetas (reutilización)
+  const astroCardData = [
+    { title: 'Moonrise', icon: '/weather-icons/wi_moonrise.svg', value: weatherData.forecast.forecastday[0].astro.moonrise },
+    { title: 'Moonset', icon: '/weather-icons/wi_moonset.svg', value: weatherData.forecast.forecastday[0].astro.moonset },
+    { title: 'Sunrise', icon: '/weather-icons/wi_sunrise.svg', value: weatherData.forecast.forecastday[0].astro.sunrise },
+    { title: 'Sunset', icon: '/weather-icons/wi_sunset.svg', value: weatherData.forecast.forecastday[0].astro.sunset },
+  ];
 
   return (
     <div className="grid grid-cols-2 gap-4 p-4 md:grid-cols-4">
-      <BigCard
-        title="Moonrise"
-        icon="/weather-icons/wi_moonrise.svg"
-        value={weatherData.forecast.forecastday[0].astro.moonrise}
-      />
-      <BigCard
-        title="Moonset"
-        icon="/weather-icons/wi_moonset.svg"
-        value={weatherData.forecast.forecastday[0].astro.moonset}
-      />
-      <BigCard
-        title="Sunrise"
-        icon="/weather-icons/wi_sunrise.svg"
-        value={weatherData.forecast.forecastday[0].astro.sunrise}
-      />
-      <BigCard
-        title="Sunset"
-        icon="/weather-icons/wi_sunset.svg"
-        value={weatherData.forecast.forecastday[0].astro.sunset}
-      />
+      {astroCardData.map((card, index) => (
+        <BigCard key={index} {...card} />
+      ))}
     </div>
   );
 }
