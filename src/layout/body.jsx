@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Now from "../components/blocks/rightNow.jsx";
+import Now from "../components/blocks/rightnow.jsx";
 import Today from "../components/blocks/today.jsx";
 import Footer from "./footer.jsx";
 import Extras from "../components/blocks/features.jsx";
