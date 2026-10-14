@@ -8,15 +8,17 @@ const SaveButton = ({ isSaved, onSave, onRemove }) => {
 
   return (
     <button
+      type="button"
       onClick={isSaved ? onRemove : onSave}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      className={`p-2 rounded-lg transition-all ${
+      aria-label={isSaved ? "Remove from saved locations" : "Save location"}
+      className={`rounded-full p-2 transition-all focus:outline-none focus:ring-2 focus:ring-sky-300/70 dark:focus:ring-sky-400/40 ${
         isSaved
           ? hovered
-            ? "bg-red-500 text-white hover:bg-red-600"
-            : "bg-green-500 text-white hover:bg-green-600"
-          : "bg-blue-500 text-white hover:bg-blue-600"
+            ? "bg-rose-500 text-white shadow-lg shadow-rose-500/20 hover:bg-rose-600"
+            : "bg-emerald-500 text-white shadow-lg shadow-emerald-500/20 hover:bg-emerald-600"
+          : "bg-sky-500 text-white shadow-lg shadow-sky-500/20 hover:bg-sky-600"
       }`}
     >
       {isSaved ? (

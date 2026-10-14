@@ -2,26 +2,97 @@ import PropTypes from "prop-types";
 import { getWeatherIcon } from "../../../utils/weatherIcons";
 
 // Subcomponente para mostrar cada hora
-const hourCard = ({ hour, isCurrentHour }) => {
+const HourCard = ({ hour, isCurrentHour }) => {
   const displayTime = isCurrentHour ? "Ahora" : hour.time.split(" ")[1];
+
   return (
     <div
-      className="flex flex-col p-4 w-28 items-center justify-between rounded-3xl border shadow-lg
-      backdrop-blur-lg backdrop-saturate-150 bg-white/50 dark:bg-[rgba(17,25,40,0.5)] border-gray-300/20 dark:border-white/10
-      md:w-36 md:p-5 lg:w-44 lg:p-6"
+      className="
+        group relative
+        flex min-h-[12.75rem] w-32 shrink-0
+        flex-col items-center justify-between
+        overflow-hidden
+        rounded-[2rem]
+        border border-white/60
+        bg-white/40
+        p-4
+        text-center
+        shadow-[0_8px_32px_rgba(15,23,42,0.08)]
+        backdrop-blur-2xl
+        backdrop-saturate-150
+        transition-all duration-300
+
+        dark:border-white/15
+        dark:bg-white/[0.07]
+        dark:shadow-[0_8px_32px_rgba(0,0,0,0.30)]
+
+        md:w-36 md:p-5
+        lg:w-40 lg:p-5
+      "
     >
-      <h3 className="mb-2 text-sm font-semibold text-gray-900 dark:text-white md:text-base lg:text-lg">
+      {/* Reflejo del cristal */}
+      <div
+        className="
+          pointer-events-none absolute inset-0
+          bg-gradient-to-br
+          from-white/60
+          via-white/15
+          to-transparent
+          opacity-70
+
+          dark:from-white/15
+          dark:via-white/[0.03]
+          dark:to-transparent
+          dark:opacity-100
+        "
+      />
+
+      {/* Borde / brillo interior */}
+      <div
+        className="
+          pointer-events-none absolute inset-[1px]
+          rounded-[calc(2rem-1px)]
+          ring-1 ring-inset ring-white/20
+
+          dark:ring-white/[0.06]
+        "
+      />
+
+      {/* Hora */}
+      <h3 className="relative z-10 mb-2 text-sm font-semibold tracking-tight  text-slate-900 dark:text-white md:text-base">
         {displayTime}
       </h3>
-      <div className="flex flex-col items-center space-y-2">
-        <div className="flex items-center justify-center p-3 rounded-full shadow-lg bg-neutral-50 md:p-4 lg:p-5 dark:bg-gray-800">
+
+      {/* Contenido */}
+      <div className="relative z-10 flex flex-col items-center space-y-2">
+        {/* Glass del icono */}
+        <div
+          className="
+            flex items-center justify-center
+            rounded-full
+            border border-white/70
+            bg-white/45
+            p-3
+            shadow-[0_4px_20px_rgba(15,23,42,0.08)]
+            backdrop-blur-xl
+            backdrop-saturate-150
+
+            dark:border-white/15
+            dark:bg-white/[0.10]
+            dark:shadow-[0_4px_20px_rgba(0,0,0,0.20)]
+
+            md:p-4
+          "
+        >
           <img
-            className="w-10 h-10 opacity-100 md:w-12 md:h-12 lg:w-14 lg:h-14 dark:opacity-90"
+            className="w-10 h-10 md:h-12 md:w-12"
             src={getWeatherIcon(hour.condition.code, hour.is_day)}
             alt={`Weather icon showing ${hour.condition.text} with a temperature of ${Math.round(hour.temp_c)}°C`}
           />
         </div>
-        <p className="text-lg font-bold text-gray-800 dark:text-gray-200 md:text-xl lg:text-2xl">
+
+        {/* Temperatura */}
+        <p className="text-2xl font-semibold tracking-tight  text-slate-950 dark:text-white">
           {Math.round(hour.temp_c)}&deg;C
         </p>
       </div>
@@ -29,7 +100,7 @@ const hourCard = ({ hour, isCurrentHour }) => {
   );
 };
 
-hourCard.propTypes = {
+HourCard.propTypes = {
   hour: PropTypes.shape({
     time: PropTypes.string.isRequired,
     temp_c: PropTypes.number.isRequired,
@@ -42,4 +113,4 @@ hourCard.propTypes = {
   isCurrentHour: PropTypes.bool.isRequired,
 };
 
-export default hourCard;
+export default HourCard;

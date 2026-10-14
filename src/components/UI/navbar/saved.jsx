@@ -34,8 +34,10 @@ const Saved = ({ onCitySelect, savedLocations, removeLocation }) => {
     >
       {/* Botón principal con icono */}
       <button
+        type="button"
         onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-        className="flex items-center justify-center p-2 text-gray-500 rounded-full hover:bg-gray-200 dark:text-gray-300 dark:hover:bg-gray-700"
+        className="icon-button flex items-center justify-center p-2 text-slate-600 rounded-full focus:outline-none focus:ring-2 focus:ring-sky-300/70 dark:text-slate-200 dark:focus:ring-sky-400/40"
+        aria-label="Mostrar ubicaciones guardadas"
         aria-haspopup="true"
         aria-expanded={isDropdownOpen}
       >
@@ -45,17 +47,18 @@ const Saved = ({ onCitySelect, savedLocations, removeLocation }) => {
       {/* Dropdown */}
       {isDropdownOpen && (
         <div
-          className={`absolute top-full left-1/2 transform -translate-x-1/2 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg dark:bg-gray-800 dark:border-gray-700 z-50 w-auto max-w-[250px] min-w-[150px]`}
+          className="glass-surface absolute left-1/2 top-full z-50 mt-3 w-auto min-w-[180px] max-w-[280px] -translate-x-1/2 overflow-hidden rounded-[1.5rem]"
         >
           {savedLocations.length > 0 ? (
-            <ul className="divide-y divide-gray-200 dark:divide-gray-700">
+              <ul className="divide-y divide-slate-200/45 dark:divide-white/10">
               {savedLocations.map((city) => (
                 <li
                   key={city}
-                  className="flex items-center justify-between px-4 py-2 text-sm cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700"
+                  className="flex items-center justify-between gap-2 px-4 py-3 text-sm transition hover:bg-white/45 dark:hover:bg-white/10"
                 >
                   <button
-                    className="flex-1 overflow-hidden text-left text-gray-800 text-ellipsis whitespace-nowrap dark:text-gray-200"
+                    type="button"
+                    className="flex-1 overflow-hidden text-ellipsis whitespace-nowrap text-left font-medium text-slate-800 dark:text-slate-100"
                     onClick={() => {
                       onCitySelect(city); // Seleccionar ciudad
                       setTimeout(() => setIsDropdownOpen(false), 100); // Pequeño retraso para evitar cierre prematuro
@@ -64,11 +67,12 @@ const Saved = ({ onCitySelect, savedLocations, removeLocation }) => {
                     {city}
                   </button>
                   <button
+                    type="button"
                     onClick={(e) => {
                       e.stopPropagation(); // Evitar seleccionar la ciudad al eliminar
                       removeLocation(city); // Eliminar ciudad
                     }}
-                    className="flex items-center justify-center px-2 py-1 text-xs font-semibold text-red-500 bg-red-100 rounded-md dark:bg-red-900 dark:text-red-400 hover:bg-red-200 dark:hover:bg-red-800"
+                    className="flex items-center justify-center rounded-full bg-rose-100 p-1.5 text-xs font-semibold text-rose-500 transition hover:bg-rose-200 dark:bg-rose-500/15 dark:text-rose-300 dark:hover:bg-rose-500/25"
                     aria-label={`Remove ${city}`}
                   >
                     <Cross className="w-4 h-4 transition-transform hover:scale-110" />
@@ -77,7 +81,7 @@ const Saved = ({ onCitySelect, savedLocations, removeLocation }) => {
               ))}
             </ul>
           ) : (
-            <p className="px-4 py-2 text-sm text-gray-500 dark:text-gray-400">
+            <p className="px-4 py-3 text-sm font-medium text-slate-500 dark:text-slate-400">
               No saved locations yet.
             </p>
           )}

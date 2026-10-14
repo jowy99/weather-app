@@ -11,8 +11,10 @@ export default defineConfig({
     VitePWA({
       manifest,
       registerType: 'autoUpdate',
+      injectRegister: 'script-defer',
+      selfDestroying: true,
       devOptions: {
-        enabled: true,
+        enabled: false,
       },
     }),
   ],

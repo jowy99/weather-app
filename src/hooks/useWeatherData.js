@@ -12,7 +12,8 @@ const useWeatherData = () => {
 
   // Función para obtener datos climáticos
   const fetchWeather = useCallback(async (query) => {
-    const cacheKey = `weatherData-${query}`;
+    const cacheKey = `weatherData-v2-${query}`;
+    setLocation(query);
     setLoading(true);
     setError(null);
 
@@ -27,12 +28,9 @@ const useWeatherData = () => {
 
       // Si no hay caché, hacer fetch desde la API
       const data = await fetchWeatherData(query);
-      if (data) {
-        saveToCache(cacheKey, data, CACHE_DURATION);
-        setWeatherData({ ...data }); // Forzar reactividad
-      }
-    } catch (err) {
-      console.error("Error fetching weather data:", err);
+      saveToCache(cacheKey, data, CACHE_DURATION);
+      setWeatherData({ ...data }); // Forzar reactividad
+    } catch {
       setError("Unable to fetch weather data.");
     } finally {
       setLoading(false);
@@ -64,8 +62,8 @@ const useWeatherData = () => {
 
   // Cargar datos iniciales al montar el componente
   useEffect(() => {
-    fetchCurrentLocationWeather();
-  }, [fetchCurrentLocationWeather]);
+    fetchWeather("Madrid");
+  }, [fetchWeather]);
 
   // Devuelve funciones y estados necesarios
   return {

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Now from "../components/blocks/rightnow.jsx";
+import Now from "../components/blocks/rightNow.jsx";
 import Today from "../components/blocks/today.jsx";
 import Footer from "./footer.jsx";
 import Extras from "../components/blocks/features.jsx";
@@ -8,7 +8,7 @@ import Navbar from "./nav.jsx";
 import useWeatherData from "../hooks/useWeatherData";
 
 function Body() {
-  const [city, setCity] = useState(""); // Ciudad seleccionada o buscada
+  const [city, setCity] = useState("Madrid"); // Ciudad seleccionada o buscada
   const {
     weatherData,
     error,
@@ -46,9 +46,9 @@ function Body() {
   };
 
   return (
-    <main className="relative flex flex-col min-h-screen pt-4 antialiased font-AlbertSans">
-      <div className="absolute top-0 z-[-2] h-full min-h-screen w-screen rotate-180 transform bg-fixed bg-white dark:bg-gray-900 bg-[radial-gradient(60%_120%_at_50%_50%,hsla(0,0%,100%,0)_0,rgba(173,216,230,0.5)_100%)] dark:bg-[radial-gradient(60%_120%_at_50%_50%,hsla(0,0%,0%,0)_0,rgba(38,70,83,0.5)_100%)]"></div>
-      <section className="flex-grow w-full lg:flex lg:flex-col">
+    <main className="app-shell relative flex flex-col min-h-screen overflow-x-hidden pt-3 antialiased font-AlbertSans">
+      <div className="app-background"></div>
+      <section className="relative flex-grow w-full lg:flex lg:flex-col">
         <Navbar
           onCitySelect={handleCityChange} // Función para seleccionar ciudad
           savedLocations={savedLocations} // Lista de ubicaciones guardadas

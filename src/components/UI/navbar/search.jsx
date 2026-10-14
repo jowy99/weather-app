@@ -63,45 +63,59 @@ const Search = ({ onCitySelect, isOpen, onClose }) => {
   return (
     <>
       {isOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-lg">
+        <div className="fixed inset-0 z-50 flex items-start justify-center bg-slate-950/35 px-4 pt-20 backdrop-blur-xl dark:bg-black/50 sm:items-center sm:pt-0">
           <div
             ref={modalRef}
-            className="w-full max-w-2xl p-6"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="search-dialog-title"
+            className="w-full max-w-2xl"
           >
-            <div className="flex items-center gap-2 px-4 py-2 bg-gray-100 border border-gray-800 rounded-md shadow-lg dark:bg-gray-700 focus-within:ring-2 focus-within:ring-blue-500">
-              <Magnify className="w-6 h-6 text-gray-800 dark:text-gray-100" />
+            <h2 id="search-dialog-title" className="sr-only">
+              Buscar ciudad
+            </h2>
+            <div className="glass-surface flex items-center gap-3 rounded-[1.75rem] px-4 py-3 shadow-2xl focus-within:ring-2 focus-within:ring-sky-300/70 dark:focus-within:ring-sky-400/40">
+              <Magnify className="w-6 h-6 text-slate-500 dark:text-slate-200" />
               <input
                 type="text"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 autoFocus
+                aria-label="Ciudad"
                 placeholder="Busca una ciudad"
-                className="flex-grow bg-transparent outline-none dark:text-gray-200"
+                className="min-w-0 flex-grow bg-transparent text-base font-medium text-slate-950 outline-none placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-500"
               />
               <button
+                type="button"
                 onClick={onClose}
-                className="px-2 py-1 text-sm border border-gray-500 rounded-md dark:text-gray-400"
+                aria-label="Cerrar búsqueda"
+                className="rounded-full border border-slate-300/50 bg-white/50 px-3 py-1 text-xs font-semibold text-slate-500 transition hover:bg-white/80 dark:border-white/10 dark:bg-white/10 dark:text-slate-300 dark:hover:bg-white/15"
               >
                 esc
               </button>
             </div>
 
             {suggestions.length > 0 && (
-              <ul className="mt-4 bg-gray-100 border border-gray-700 divide-y divide-gray-700 rounded-md dark:bg-gray-800">
+              <ul className="glass-surface mt-4 overflow-hidden rounded-[1.5rem]">
                 {suggestions.map((suggestion, index) => (
                   <li
                     key={index}
-                    onClick={() => handleCitySelect(suggestion.name)}
-                    className="px-4 py-2 cursor-pointer hover:bg-blue-50 dark:text-gray-200 dark:hover:bg-gray-700"
+                    className="text-slate-800 dark:text-slate-100"
                   >
-                    {suggestion.name}, {suggestion.region}
+                    <button
+                      type="button"
+                      onClick={() => handleCitySelect(suggestion.name)}
+                      className="w-full px-5 py-3 text-left text-sm font-medium transition hover:bg-white/50 focus:outline-none focus:ring-2 focus:ring-sky-300/70 dark:hover:bg-white/10"
+                    >
+                      {suggestion.name}, {suggestion.region}
+                    </button>
                   </li>
                 ))}
               </ul>
             )}
 
             {suggestions.length === 0 && query.trim() && (
-              <p className="mt-4 font-semibold text-red-700 dark:text-red-500 drop-shadow-lg">No cities found</p>
+              <p className="mt-4 px-2 font-semibold text-rose-600 dark:text-rose-300">No cities found</p>
             )}
           </div>
         </div>

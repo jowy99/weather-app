@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types';
-import BigCard from '../UI/cards/bigcard.jsx';
+import BigCard from '../UI/cards/bigCard.jsx';
 
 function Astro({ weatherData = null, error = null }) {
   if (error) {
     return (
-      <p className="p-4 text-lg font-medium text-red-500 dark:text-red-300">
+      <p className="mx-auto max-w-7xl px-4 py-6 text-lg font-medium text-rose-600 dark:text-rose-300">
         Error fetching weather data: {error}
       </p>
     );
@@ -12,7 +12,7 @@ function Astro({ weatherData = null, error = null }) {
 
   if (!weatherData) {
     return (
-      <p className="p-32 text-xl font-medium text-gray-500 dark:text-gray-300">
+      <p className="mx-auto max-w-7xl px-4 py-16 text-xl font-medium text-slate-500 dark:text-slate-300">
         Fetching weather data...
       </p>
     );
@@ -27,7 +27,7 @@ function Astro({ weatherData = null, error = null }) {
   ];
 
   return (
-    <div className="grid grid-cols-2 gap-4 p-4 md:grid-cols-4">
+    <div className="mx-auto grid w-full max-w-7xl grid-cols-2 gap-4 px-4 py-3 md:grid-cols-4 md:px-8 lg:px-10">
       {bigCardData.map((card, index) => (
         <BigCard key={index} {...card} />
       ))}

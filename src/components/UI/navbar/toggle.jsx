@@ -22,9 +22,10 @@ const ThemeToggle = () => {
 
   return (
     <button
+      type="button"
       onClick={toggleTheme}
       aria-label="Toggle theme"
-      className="flex items-center justify-center w-10 h-10 rounded-full focus:outline-none"
+      className="icon-button flex h-10 w-10 items-center justify-center rounded-full text-slate-700 focus:outline-none focus:ring-2 focus:ring-sky-300/70 dark:text-slate-100 dark:focus:ring-sky-400/40"
     >
       {isDarkMode ? (
         // Sol (Modo oscuro)
@@ -32,7 +33,7 @@ const ThemeToggle = () => {
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24"
           fill="currentColor"
-          className="w-6 h-6 text-yellow-500"
+          className="w-5 h-5 text-amber-300"
         >
           <circle cx="12" cy="12" r="5" />
           <line x1="12" y1="1" x2="12" y2="4" stroke="currentColor" strokeWidth="2" />
@@ -50,7 +51,7 @@ const ThemeToggle = () => {
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 24 24"
         fill="currentColor"
-        className="w-6 h-6 text-gray-800"
+        className="w-5 h-5 text-slate-700"
         >
         <path
             d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"
