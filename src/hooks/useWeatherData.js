@@ -3,75 +3,97 @@ import { fetchWeatherData } from "../services/rapidapi";
 import { saveToCache, getFromCache } from "./cacheUtils";
 
 const CACHE_DURATION = 3600000; // 1 hora
+const DEFAULT_LOCATION = "Madrid";
 
 const useWeatherData = () => {
   const [weatherData, setWeatherData] = useState(null);
-  const [location, setLocation] = useState("Madrid"); // Ubicación predeterminada
+  const [location, setLocation] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  // Función para obtener datos climáticos
+  // Obtener datos meteorológicos
   const fetchWeather = useCallback(async (query) => {
     const cacheKey = `weatherData-v2-${query}`;
+
     setLocation(query);
     setLoading(true);
     setError(null);
 
     try {
-      // Intentar cargar desde caché
+      // Comprobar caché
       const cachedData = getFromCache(cacheKey);
+
       if (cachedData) {
-        setWeatherData({ ...cachedData }); // Forzar reactividad
-        setLoading(false);
+        setWeatherData({ ...cachedData });
         return;
       }
 
-      // Si no hay caché, hacer fetch desde la API
+      // Consultar API
       const data = await fetchWeatherData(query);
+
       saveToCache(cacheKey, data, CACHE_DURATION);
-      setWeatherData({ ...data }); // Forzar reactividad
-    } catch {
+
+      setWeatherData({ ...data });
+    } catch (error) {
+      console.error("Error fetching weather:", error);
       setError("Unable to fetch weather data.");
     } finally {
       setLoading(false);
     }
   }, []);
 
-  // Función para manejar la ubicación actual
+  // Obtener tiempo usando ubicación actual
   const fetchCurrentLocationWeather = useCallback(() => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const { latitude, longitude } = position.coords;
-          const query = `${latitude},${longitude}`;
-          setLocation(query);
-          fetchWeather(query);
-        },
-        () => {
-          // Si se deniega la ubicación, usar la predeterminada
-          setLocation("Madrid");
-          fetchWeather("Madrid");
-        }
-      );
-    } else {
-      // Si el navegador no soporta geolocalización
-      setLocation("Madrid");
-      fetchWeather("Madrid");
+    if (!navigator.geolocation) {
+      console.warn("Geolocation is not supported.");
+
+      fetchWeather(DEFAULT_LOCATION);
+      return;
     }
+
+    setLoading(true);
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords;
+
+        console.log("Ubicación obtenida:", {
+          latitude,
+          longitude,
+          accuracy: position.coords.accuracy,
+        });
+
+        const query = `${latitude},${longitude}`;
+
+        fetchWeather(query);
+      },
+
+      (error) => {
+        console.error("Geolocation error:", error);
+
+        // Fallback si falla la ubicación
+        fetchWeather(DEFAULT_LOCATION);
+      },
+
+      {
+        enableHighAccuracy: true,
+        timeout: 10000,
+        maximumAge: 300000,
+      },
+    );
   }, [fetchWeather]);
 
-  // Cargar datos iniciales al montar el componente
+  // Al iniciar → intentar usar ubicación actual
   useEffect(() => {
-    fetchWeather("Madrid");
-  }, [fetchWeather]);
+    fetchCurrentLocationWeather();
+  }, [fetchCurrentLocationWeather]);
 
-  // Devuelve funciones y estados necesarios
   return {
     weatherData,
     location,
     fetchWeather,
-    fetchCurrentLocationWeather, // Asegúrate de incluir esta línea
-    loading, // Asegúrate de incluir esta línea
+    fetchCurrentLocationWeather,
+    loading,
     error,
   };
 };
