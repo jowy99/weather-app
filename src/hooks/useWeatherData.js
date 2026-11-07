@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { fetchWeatherData } from "../services/rapidapi";
+import { fetchWeatherData, reverseGeocode } from "../services/rapidapi";
 import { saveToCache, getFromCache } from "./cacheUtils";
 
 const CACHE_DURATION = 3600000; // 1 hora
@@ -43,7 +43,7 @@ const useWeatherData = () => {
   }, []);
 
   // Obtener tiempo usando ubicación actual
-  const fetchCurrentLocationWeather = useCallback(() => {
+  const fetchCurrentLocationWeather = useCallback(async () => {
     if (!navigator.geolocation) {
       console.warn("Geolocation is not supported.");
 
@@ -54,7 +54,7 @@ const useWeatherData = () => {
     setLoading(true);
 
     navigator.geolocation.getCurrentPosition(
-      (position) => {
+      async (position) => {
         const { latitude, longitude } = position.coords;
 
         console.log("Ubicación obtenida:", {
@@ -63,7 +63,11 @@ const useWeatherData = () => {
           accuracy: position.coords.accuracy,
         });
 
-        const query = `${latitude},${longitude}`;
+        // Intentar obtener nombre de ciudad con reverse geocoding
+        const cityName = await reverseGeocode(latitude, longitude);
+        const query = cityName || `${latitude},${longitude}`;
+
+        console.log("Ciudad resuelta:", cityName ? cityName : "usando coordenadas");
 
         fetchWeather(query);
       },

@@ -14,6 +14,25 @@ export const fetchOptions = {
     : {},
 };
 
+// Reverse geocoding con Nominatim (OpenStreetMap) — gratis, sin API key
+export const reverseGeocode = async (latitude, longitude) => {
+  try {
+    const response = await fetch(
+      `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&zoom=10&addressdetails=1`,
+      { headers: { "User-Agent": "weather-app/1.0" } }
+    );
+    if (!response.ok) return null;
+    const data = await response.json();
+
+    // Intentar obtener el nombre más relevante
+    const address = data.address || {};
+    const city = address.city || address.town || address.village || address.municipality || address.county || address.state || null;
+    return city || data.display_name || null;
+  } catch {
+    return null;
+  }
+};
+
 // Función para fetch de datos climáticos
 export const fetchWeatherData = async (query = "Madrid") => {
   if (!hasRapidApiConfig) {
