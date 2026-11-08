@@ -15,7 +15,7 @@ function LocateButton({ onClick, loading = false }) {
       disabled={loading}
       aria-label="Usar mi ubicación actual"
       aria-busy={loading}
-      className="shrink-0 rounded-xl w-11 h-11 flex items-center justify-center text-white/80 transition hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent disabled:opacity-50"
+      className="shrink-0 rounded-full w-11 h-11 flex items-center justify-center text-white/80 transition hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-inset focus-visible:ring-offset-2 focus-visible:ring-offset-transparent disabled:opacity-50"
     >
       <svg
         viewBox="0 0 24 24"
@@ -79,13 +79,13 @@ const Navbar = ({ onCitySelect, savedLocations, onSave, onRemove, isSaved, curre
           {/* Right side: unified action pill */}
           <div className="flex items-center gap-2 lg:col-start-3 lg:justify-self-end">
             {/* Unified actions pill */}
-            <div className="actions-pill flex items-center">
+            <div className="actions-pill flex items-center rounded-full bg-white/10 p-1 gap-1 overflow-hidden">
               {/* Mobile search button */}
               <button
                 type="button"
                 onClick={() => setIsSearchOpen(true)}
                 aria-label="Buscar ciudad"
-                className="shrink-0 rounded-xl w-11 h-11 flex items-center justify-center text-white/80 transition hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent lg:hidden"
+                className="shrink-0 rounded-full w-11 h-11 flex items-center justify-center text-white/80 transition hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-inset focus-visible:ring-offset-2 focus-visible:ring-offset-transparent lg:hidden"
               >
                 <Magnifying className="h-5 w-5" />
               </button>

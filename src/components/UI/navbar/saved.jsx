@@ -71,7 +71,7 @@ const Saved = ({ onCitySelect, savedLocations, removeLocation, currentId = null 
         aria-haspopup="listbox"
         aria-expanded={open}
         aria-controls="saved-locations-panel"
-        className="shrink-0 rounded-xl w-11 h-11 flex items-center justify-center text-white/80 transition hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent"
+        className="shrink-0 rounded-full w-11 h-11 flex items-center justify-center text-white/80 transition hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-inset focus-visible:ring-offset-2 focus-visible:ring-offset-transparent"
       >
         <SavedLocation className="h-5 w-5" filled={false} />
       </button>
