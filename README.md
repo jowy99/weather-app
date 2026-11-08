@@ -1,65 +1,120 @@
 <div align="center">
-<img src="https://github.com/jowy99/weather-app/blob/main/public/weather-app-banner.png" alt="Weather App Banner" width="80%"/>
-<p>
-<h3><b>A beautifully weather app</b></h3>
-</p>
+  <img src="public/weather-app-banner.png" alt="Matiz – App del tiempo" width="1200" height="400">
 </div>
 
-## 📦 Packages:
+# Matiz
 
-- ⚡️ [Vitejs](https://vitejs.dev/) - Next generation frontend tooling.
-- ☁️ [Vitejs PWA](https://vite-plugin-pwa.netlify.app/) - Zero-config PWA Framework-agnostic Plugin for Vite.
-- ⚒️ [React 18](https://reactjs.org/) - A JavaScript library for building user interfaces.
-- 💅 [Tailwind CSS](https://tailwindcss.com/) - CSS framework.
+Una aplicación del tiempo con cielo animado que refleja las condiciones reales y una PWA instalable.
 
-## ⚒️ Getting Started:
+## Funciones
 
-You will need:
+- **Fondo animado** que cambia según la condición meteorológica y la fase día/noche
+- **Previsión por horas** con condiciones, precipitación y viento
+- **Previsión a 10 días**
+- **Avisos meteorológicos** en español
+- **Calidad del aire** (índice AQI)
+- **UV, viento, presión, sol y luna**
+- **Búsqueda de ciudades** y **geolocalización**
+- **Mis ubicaciones** para guardar favoritos
+- **Funciona sin conexión** (PWA)
+- **Accesible**: contraste AA, navegación por teclado, soporte para movimiento reducido
 
-- [Nodejs 16+](https://nodejs.org/).
-- [Git](https://git-scm.com/).
+## Tecnologías
 
-1. Clone the repository:
+- React 18
+- Vite 5
+- Tailwind CSS 3
+- vite-plugin-pwa (Workbox)
+- Cloudflare Pages Functions
 
-```
-git clone git@github.com:jowy99/weather-app.git
-```
+## Fuentes de datos
 
-2. Create a .env file with the following variables:
+- **WeatherAPI.com** (vía RapidAPI) — tiempo actual, previsión por horas, 3 días, avisos y calidad del aire
+- **Open-Meteo** — previsión de 4 a 10 días y búsqueda de ciudades (gratis, uso no comercial, CC BY 4.0)
+- **OpenStreetMap Nominatim** — nombre del lugar a partir de coordenadas
+- **Meteocons** de Bas Milius — iconos meteorológicos (MIT)
 
-```
-VITE_RAPIDAPI_KEY=
-VITE_RAPIDAPI_HOST=
-```
+## Puesta en marcha en local
 
-🤔 How to generate the RAPIDAPI_KEY?
+### Requisitos
 
-- Create a free RapidApi account: [midu.link/rapidapi](https://midu.link/rapidapi).
-- Go to WeatherApi.com: [rapidapi.com/weatherapi/api/weatherapi-com/](https://rapidapi.com/weatherapi/api/weatherapi-com/).
-- Click on "Pricing" -> "Basic" -> "Subscribe": [/weatherapi-com/pricing](https://rapidapi.com/weatherapi/api/weatherapi-com/pricing).
-- Go to your RapidApi Dashboard: [/developer/dashboard](https://rapidapi.com/developer/dashboard).
-- In the left sidebar -> "Default Apps" -> Click on your api -> "Security" and copy the generated Key in the .env file.
+- [Node.js](https://nodejs.org/) 18 o superior
+- [pnpm](https://pnpm.io/) (también funciona con npm)
 
-🔨 [All RapidApi and fetcher configuration here](https://github.com/jowy99/weather-app/tree/main/src/services).
+### Pasos
 
-3. Install dependencies:
-
-```
-npm install
-```
-
-4. Run the app:
-
-```
-npm run dev
+```bash
+git clone https://github.com/jowy99/weather-app.git
+cd weather-app
+pnpm install
 ```
 
-5. 🥳 Ready! Open the browser and write localhost:5173.
+Copia `.env.example` a `.env` y rellena tu clave de API:
 
-## 🚀 Deploy on Cloudflare Pages:
+```bash
+cp .env.example .env
+```
 
-- [weather.joelarnaud.com](https://weather.joelarnaud.com/)
+Abre `.env` y añade tu clave de RapidAPI:
 
-## 🔑 License:
+```
+RAPIDAPI_KEY=tu_clave_aqui
+```
 
-- [MIT License](https://github.com/jowy99/weather-app/blob/main/LICENSE)
+> **Nota:** la variable se llama `RAPIDAPI_KEY` (sin el prefijo `VITE_`). Esto es intencional: las variables sin `VITE_` no se exponen al navegador, así que tu clave solo vive en el servidor.
+
+```bash
+pnpm dev
+```
+
+### Scripts disponibles
+
+| Comando | Descripción |
+| --- | --- |
+| `pnpm dev` | Sirve la app en modo desarrollo con proxy de API |
+| `pnpm build` | Compila la app para producción |
+| `pnpm preview` | Previsualiza la compilación de producción en local |
+| `pnpm lint` | Ejecuta ESLint |
+
+## Despliegue en Cloudflare Pages
+
+1. Conecta este repositorio en [Cloudflare Pages](https://pages.cloudflare.com).
+2. **Comando de compilación:** `npm run build`
+3. **Carpeta de salida:** `dist`
+4. La carpeta `functions/` se despliega automáticamente como [Pages Functions](https://developers.cloudflare.com/pages/functions/) — el endpoint `/api/forecast` queda disponible sin configuración extra.
+5. Añade la variable de entorno secreta `RAPIDAPI_KEY` (y opcional `RAPIDAPI_HOST`).
+6. Las cabeceras de seguridad se aplican automáticamente desde `public/_headers`.
+
+**Recomendación:** crea una regla de *rate limiting* para `/api/*` para proteger tu clave de RapidAPI.
+
+## Seguridad
+
+- La clave de RapidAPI **solo vive en el servidor**: la Pages Function en producción y el proxy de Vite en desarrollo. Nunca llega al navegador.
+- El proxy valida los parámetros de consulta (`q` y `days`) antes de reenviar la petición.
+- **CSP** y cabeceras de seguridad (`X-Frame-Options`, `X-Content-Type-Options`, `HSTS`, `COOP`) se aplican desde `public/_headers`.
+
+## Estructura del proyecto
+
+```
+├── functions/api/          # Cloudflare Pages Functions (proxy de API)
+├── public/                 # Archivos estáticos, iconos PWA, cabeceras HTTP
+├── src/
+│   ├── components/
+│   │   ├── blocks/         # Bloques principales (tiempo actual, horas, días…)
+│   │   └── UI/             # Componentes de interfaz reutilizables
+│   ├── hooks/              # Hooks personalizados
+│   ├── layout/             # Layout general (header, footer)
+│   ├── services/           # Llamadas a APIs externas
+│   └── utils/              # Funciones auxiliares
+├── .env.example            # Variables de entorno de ejemplo
+├── manifest.json           # Configuración PWA
+└── vite.config.js          # Configuración de Vite + PWA
+```
+
+## Licencia
+
+Este proyecto está licenciado bajo la [MIT License](LICENSE).
+
+---
+
+Datos: WeatherAPI.com · Open-Meteo · OpenStreetMap
