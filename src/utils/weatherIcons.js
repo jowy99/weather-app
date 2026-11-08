@@ -1,4 +1,4 @@
-const icon = (name) => `/weather-icons/${name}.svg`;
+const icon = (name) => `/weather-icons/fill/${name}.svg`;
 
 const sameIcon = (name) => ({
   day: icon(name),

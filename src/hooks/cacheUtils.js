@@ -1,19 +1,31 @@
-const DEFAULT_CACHE_DURATION = 3600000; // 1h en milisegundos
+const DEFAULT_CACHE_DURATION = 3600000; // 1 h
 
 export const saveToCache = (key, data, duration = DEFAULT_CACHE_DURATION) => {
-  const cacheEntry = { data, timestamp: Date.now(), duration };
-  localStorage.setItem(key, JSON.stringify(cacheEntry));
+  try {
+    localStorage.setItem(key, JSON.stringify({ data, timestamp: Date.now(), duration }));
+  } catch {
+    // almacenamiento lleno o bloqueado: se ignora
+  }
 };
 
-export const getFromCache = (key) => {
-  const cacheEntry = localStorage.getItem(key);
-  if (!cacheEntry) return null;
-
-  const { data, timestamp, duration } = JSON.parse(cacheEntry);
-  if (Date.now() - timestamp > duration) {
-    localStorage.removeItem(key);
+const read = (key) => {
+  try {
+    const raw = localStorage.getItem(key);
+    return raw ? JSON.parse(raw) : null;
+  } catch {
     return null;
   }
+};
 
-  return data;
+// Datos vigentes (no caducados). No borra los caducados: sirven para el modo sin conexión.
+export const getFromCache = (key) => {
+  const entry = read(key);
+  if (!entry || Date.now() - entry.timestamp > entry.duration) return null;
+  return entry.data;
+};
+
+// Últimos datos guardados aunque estén caducados, con su hora.
+export const getStaleFromCache = (key) => {
+  const entry = read(key);
+  return entry ? { data: entry.data, timestamp: entry.timestamp } : null;
 };
