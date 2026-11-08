@@ -87,14 +87,14 @@ const Saved = ({ onCitySelect, savedLocations, removeLocation, currentId = null 
         >
           <p
             id="saved-locations-title"
-            className="border-b border-white/10 px-4 py-3 text-xs font-semibold uppercase tracking-[0.2em] text-white/85"
+            className="border-b border-white/15 px-4 py-3 text-xs font-semibold uppercase tracking-[0.2em] text-white/85"
           >
             Mis ubicaciones
           </p>
           {savedLocations.length > 0 ? (
             <ul>
               {savedLocations.map((loc) => (
-                <li key={loc.id} className="border-b border-white/10 last:border-b-0 flex items-center justify-between gap-2 px-4 py-3 transition hover:bg-white/10">
+                <li key={loc.id} className="border-b border-white/15 last:border-b-0 flex items-center justify-between gap-2 px-4 py-3 transition hover:bg-white/15">
                   <button
                     type="button"
                     role="option"

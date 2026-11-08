@@ -68,7 +68,7 @@ const Search = ({ onCitySelect, isOpen, onClose }) => {
       role="dialog"
       aria-modal="true"
       aria-labelledby="search-title"
-      className="fixed inset-0 z-50 flex items-start justify-center bg-black/40 px-4 pt-20 backdrop-blur-sm sm:items-center sm:pt-0 animate-fade-in"
+      className="fixed inset-0 z-50 flex items-start justify-center bg-black/45 px-4 pt-20 backdrop-blur-md sm:items-center sm:pt-0 animate-fade-in"
     >
       <div className="w-full max-w-2xl">
         <div className={`${GLASS_POPOVER} flex items-center gap-3 rounded-[1.75rem] px-4 py-3 shadow-2xl`}>
@@ -87,7 +87,7 @@ const Search = ({ onCitySelect, isOpen, onClose }) => {
             type="button"
             onClick={onClose}
             aria-label="Cerrar búsqueda"
-            className="shrink-0 rounded-lg border border-white/10 bg-white/10 px-3 py-1 text-xs font-semibold text-white/60 transition hover:bg-white/15 hover:text-white/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
+            className="shrink-0 rounded-lg border border-white/15 bg-white/15 px-3 py-1 text-xs font-semibold text-white/60 transition hover:bg-white/20 hover:text-white/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
           >
             esc
           </button>
@@ -104,7 +104,7 @@ const Search = ({ onCitySelect, isOpen, onClose }) => {
                 <button
                   type="button"
                   onClick={() => handleSelect(s)}
-                  className="block w-full rounded-lg px-4 py-3 text-left transition hover:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/10 focus-visible:ring-inset"
+                  className="block w-full rounded-lg px-4 py-3 text-left transition hover:bg-white/15 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/15 focus-visible:ring-inset"
                 >
                   <span className="block text-sm font-semibold text-white">{s.name}</span>
                   <span className="block text-xs text-white/85">{s.region}</span>

@@ -83,11 +83,11 @@
   }
 
   .glass-popover {
-    background: linear-gradient(var(--panel-tint), var(--panel-tint)), rgba(10, 14, 22, 0.55);
-    border: 1px solid var(--glass-border);
-    backdrop-filter: var(--glass-blur);
-    -webkit-backdrop-filter: var(--glass-blur);
-    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.35);
+    background: rgba(38, 38, 42, 0.92);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(30px) saturate(1.2);
+    -webkit-backdrop-filter: blur(30px) saturate(1.2);
+    box-shadow: 0 18px 50px rgba(0, 0, 0, 0.45);
   }
 
   .weather-scroll {
