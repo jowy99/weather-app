@@ -5,7 +5,7 @@ import Saved from "../components/UI/navbar/saved.jsx";
 import SaveButton from "../components/UI/Buttons/SaveButton.jsx";
 import Magnifying from "../components/UI/icons/magnifying.jsx";
 
-const APP_NAME = "WeatherApp";
+const APP_NAME = "Matiz";
 
 function LocateButton({ onClick, loading = false }) {
   return (
@@ -56,12 +56,12 @@ const Navbar = ({ onCitySelect, savedLocations, onSave, onRemove, isSaved, curre
   return (
     <nav className="sticky top-0 z-40 w-full py-2">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="relative flex h-16 items-center justify-between gap-3">
-          {/* Logo */}
-          <h1 className="font-sans text-xl font-semibold tracking-tight text-white shrink-0">{APP_NAME}</h1>
+        <div className="relative flex h-16 items-center justify-end lg:grid lg:grid-cols-[1fr_auto_1fr]">
+          {/* Logo — visible solo para lectores de pantalla */}
+          <h1 className="sr-only font-sans text-xl font-semibold tracking-tight text-white">{APP_NAME}</h1>
 
           {/* Desktop search bar — centrado */}
-          <div className="pointer-events-none absolute left-1/2 top-1/2 hidden -translate-x-1/2 -translate-y-1/2 justify-center lg:flex lg:pointer-events-auto">
+          <div className="pointer-events-none hidden lg:pointer-events-auto lg:flex lg:col-start-2 lg:justify-center">
             <button
               type="button"
               onClick={() => setIsSearchOpen(true)}
@@ -77,7 +77,7 @@ const Navbar = ({ onCitySelect, savedLocations, onSave, onRemove, isSaved, curre
           </div>
 
           {/* Right side: unified action pill */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 lg:col-start-3 lg:justify-self-end">
             {/* Unified actions pill */}
             <div className="actions-pill flex items-center">
               {/* Mobile search button */}
