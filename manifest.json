@@ -5,8 +5,8 @@
     "display": "standalone",
     "scope": "/",
     "start_url": "/",
-    "name": "WeatherApp",
-    "short_name": "WeatherApp",
+    "name": "Matiz",
+    "short_name": "Matiz",
     "description": "Una aplicación del tiempo con un diseño elegante",
     "icons": [
         {

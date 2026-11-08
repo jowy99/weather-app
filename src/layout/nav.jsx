@@ -5,7 +5,7 @@ import Saved from "../components/UI/navbar/saved.jsx";
 import SaveButton from "../components/UI/Buttons/SaveButton.jsx";
 import Magnifying from "../components/UI/icons/magnifying.jsx";
 
-const APP_NAME = "WeatherApp";
+const APP_NAME = "Matiz";
 
 function LocateButton({ onClick, loading = false }) {
   return (
@@ -15,7 +15,7 @@ function LocateButton({ onClick, loading = false }) {
       disabled={loading}
       aria-label="Usar mi ubicación actual"
       aria-busy={loading}
-      className="shrink-0 rounded-xl w-11 h-11 flex items-center justify-center text-white/80 transition hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent disabled:opacity-50"
+      className="shrink-0 rounded-full w-11 h-11 flex items-center justify-center text-white/80 transition hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-inset focus-visible:ring-offset-2 focus-visible:ring-offset-transparent disabled:opacity-50"
     >
       <svg
         viewBox="0 0 24 24"
@@ -56,20 +56,20 @@ const Navbar = ({ onCitySelect, savedLocations, onSave, onRemove, isSaved, curre
   return (
     <nav className="sticky top-0 z-40 w-full py-2">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="relative flex h-16 items-center justify-between gap-3">
-          {/* Logo */}
-          <h1 className="font-sans text-xl font-semibold tracking-tight text-white shrink-0">{APP_NAME}</h1>
+        <div className="relative flex h-16 items-center justify-end lg:grid lg:grid-cols-[1fr_auto_1fr]">
+          {/* Logo — visible solo para lectores de pantalla */}
+          <h1 className="sr-only font-sans text-xl font-semibold tracking-tight text-white">{APP_NAME}</h1>
 
           {/* Desktop search bar — centrado */}
-          <div className="pointer-events-none absolute left-1/2 top-1/2 hidden -translate-x-1/2 -translate-y-1/2 justify-center lg:flex lg:pointer-events-auto">
+          <div className="pointer-events-none hidden lg:pointer-events-auto lg:flex lg:col-start-2 lg:justify-center lg:w-[30rem] xl:w-[36rem] max-w-[calc(100vw-20rem)]">
             <button
               type="button"
               onClick={() => setIsSearchOpen(true)}
               aria-label="Buscar ciudad"
-              className="glass-pill flex items-center gap-3 w-full max-w-md rounded-2xl pl-5 pr-4 py-2.5 text-left text-sm font-medium cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
+              className="actions-pill bg-white/10 rounded-full flex h-12 items-center gap-3 w-full max-w-xl xl:max-w-2xl pl-5 pr-4 text-left text-[15px] font-medium cursor-pointer transition hover:bg-white/15 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
             >
-              <Magnifying className="h-5 w-5 shrink-0 text-white/50" />
-              <span className="min-w-0 truncate text-white/50">Buscar ciudad…</span>
+              <Magnifying className="h-5 w-5 shrink-0 text-white/85" />
+              <span className="min-w-0 truncate text-white/85">Buscar ciudad…</span>
               <span aria-hidden="true" className="ml-auto shrink-0 shortcut-pill rounded-lg px-2 py-0.5 text-xs font-semibold text-white/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60">
                 {shortcutKey}
               </span>
@@ -77,15 +77,15 @@ const Navbar = ({ onCitySelect, savedLocations, onSave, onRemove, isSaved, curre
           </div>
 
           {/* Right side: unified action pill */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 lg:col-start-3 lg:justify-self-end">
             {/* Unified actions pill */}
-            <div className="actions-pill flex items-center">
+            <div className="actions-pill flex items-center rounded-full bg-white/10 p-1 gap-1 overflow-hidden">
               {/* Mobile search button */}
               <button
                 type="button"
                 onClick={() => setIsSearchOpen(true)}
                 aria-label="Buscar ciudad"
-                className="shrink-0 rounded-xl w-11 h-11 flex items-center justify-center text-white/80 transition hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent lg:hidden"
+                className="shrink-0 rounded-full w-11 h-11 flex items-center justify-center text-white/80 transition hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-inset focus-visible:ring-offset-2 focus-visible:ring-offset-transparent lg:hidden"
               >
                 <Magnifying className="h-5 w-5" />
               </button>

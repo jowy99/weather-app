@@ -7,7 +7,7 @@ const SaveButton = ({ isSaved, onSave, onRemove }) => (
     type="button"
     onClick={isSaved ? onRemove : onSave}
     aria-label={isSaved ? "Quitar de ubicaciones guardadas" : "Guardar ubicación"}
-    className="shrink-0 rounded-lg w-11 h-11 flex items-center justify-center text-white/80 transition hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-white/20"
+    className="shrink-0 rounded-full w-11 h-11 flex items-center justify-center text-white/80 transition hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-white/20 focus:ring-inset"
   >
     {isSaved ? (
       <RemoveLocation className="h-5 w-5" />
