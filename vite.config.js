@@ -26,8 +26,63 @@ export default defineConfig(({ mode }) => {
     },
   }
 
+  const forecastValidator = {
+    name: 'forecast-validator',
+    configureServer(server) {
+      server.middlewares.use(async (req, res, next) => {
+        if (req.url.startsWith('/api/forecast')) {
+          if (req.method !== 'GET') {
+            res.writeHead(405, { 'content-type': 'application/json; charset=utf-8' })
+            return res.end(JSON.stringify({ error: 'Método no permitido' }))
+          }
+          const url = new URL(req.url, 'http://localhost')
+          const q = (url.searchParams.get('q') || '').trim()
+          const daysRaw = url.searchParams.get('days')
+          if (!q || q.length > 100 || !/^[\p{L}\p{N}\s,.'()-]+$/u.test(q)) {
+            res.writeHead(400, { 'content-type': 'application/json; charset=utf-8' })
+            return res.end(JSON.stringify({ error: 'Parámetro q no válido' }))
+          }
+          const days = daysRaw === null ? 3 : Number(daysRaw)
+          if (!Number.isInteger(days) || days < 1 || days > 3) {
+            res.writeHead(400, { 'content-type': 'application/json; charset=utf-8' })
+            return res.end(JSON.stringify({ error: 'Parámetro days no válido' }))
+          }
+          url.search = `q=${encodeURIComponent(q)}&days=${days}&aqi=yes&alerts=yes`
+          req.url = url.pathname + url.search
+        }
+        next()
+      })
+    },
+    configurePreviewServer(server) {
+      server.middlewares.use(async (req, res, next) => {
+        if (req.url.startsWith('/api/forecast')) {
+          if (req.method !== 'GET') {
+            res.writeHead(405, { 'content-type': 'application/json; charset=utf-8' })
+            return res.end(JSON.stringify({ error: 'Método no permitido' }))
+          }
+          const url = new URL(req.url, 'http://localhost')
+          const q = (url.searchParams.get('q') || '').trim()
+          const daysRaw = url.searchParams.get('days')
+          if (!q || q.length > 100 || !/^[\p{L}\p{N}\s,.'()-]+$/u.test(q)) {
+            res.writeHead(400, { 'content-type': 'application/json; charset=utf-8' })
+            return res.end(JSON.stringify({ error: 'Parámetro q no válido' }))
+          }
+          const days = daysRaw === null ? 3 : Number(daysRaw)
+          if (!Number.isInteger(days) || days < 1 || days > 3) {
+            res.writeHead(400, { 'content-type': 'application/json; charset=utf-8' })
+            return res.end(JSON.stringify({ error: 'Parámetro days no válido' }))
+          }
+          url.search = `q=${encodeURIComponent(q)}&days=${days}&aqi=yes&alerts=yes`
+          req.url = url.pathname + url.search
+        }
+        next()
+      })
+    },
+  }
+
   return {
     plugins: [
+      forecastValidator,
       react(),
       VitePWA({
         manifest,
