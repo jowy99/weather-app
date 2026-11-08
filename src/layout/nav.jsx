@@ -61,15 +61,15 @@ const Navbar = ({ onCitySelect, savedLocations, onSave, onRemove, isSaved, curre
           <h1 className="sr-only font-sans text-xl font-semibold tracking-tight text-white">{APP_NAME}</h1>
 
           {/* Desktop search bar — centrado */}
-          <div className="pointer-events-none hidden lg:pointer-events-auto lg:flex lg:col-start-2 lg:justify-center">
+          <div className="pointer-events-none hidden lg:pointer-events-auto lg:flex lg:col-start-2 lg:justify-center lg:w-[30rem] xl:w-[36rem] max-w-[calc(100vw-20rem)]">
             <button
               type="button"
               onClick={() => setIsSearchOpen(true)}
               aria-label="Buscar ciudad"
-              className="glass-pill flex items-center gap-3 w-full max-w-md rounded-2xl pl-5 pr-4 py-2.5 text-left text-sm font-medium cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
+              className="actions-pill bg-white/10 rounded-full flex h-12 items-center gap-3 w-full max-w-xl xl:max-w-2xl pl-5 pr-4 text-left text-[15px] font-medium cursor-pointer transition hover:bg-white/15 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
             >
-              <Magnifying className="h-5 w-5 shrink-0 text-white/50" />
-              <span className="min-w-0 truncate text-white/50">Buscar ciudad…</span>
+              <Magnifying className="h-5 w-5 shrink-0 text-white/85" />
+              <span className="min-w-0 truncate text-white/85">Buscar ciudad…</span>
               <span aria-hidden="true" className="ml-auto shrink-0 shortcut-pill rounded-lg px-2 py-0.5 text-xs font-semibold text-white/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60">
                 {shortcutKey}
               </span>

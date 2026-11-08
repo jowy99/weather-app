@@ -82,6 +82,14 @@
     color: #cbd5e1;
   }
 
+  .glass-popover {
+    background: linear-gradient(var(--panel-tint), var(--panel-tint)), rgba(10, 14, 22, 0.55);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.35);
+  }
+
   .weather-scroll {
     scrollbar-width: thin;
     scrollbar-color: rgba(100, 116, 139, 0.35) transparent;

@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import SavedLocation from "../icons/savedLocation.jsx";
 import Cross from "../icons/cross.jsx";
 
-const PANEL_BG = "bg-[rgba(17,22,32,0.94)]";
+const GLASS_POPOVER = "glass-popover";
 
 const Saved = ({ onCitySelect, savedLocations, removeLocation, currentId = null }) => {
   const [open, setOpen] = useState(false);
@@ -83,7 +83,7 @@ const Saved = ({ onCitySelect, savedLocations, removeLocation, currentId = null 
           aria-labelledby="saved-locations-title"
           ref={panelRef}
           onKeyDown={handlePanelKeyDown}
-          className={`${PANEL_BG} absolute right-0 top-full z-50 mt-3 max-w-[calc(100vw-2rem)] w-72 overflow-hidden rounded-[1.5rem] border border-white/10 shadow-2xl backdrop-blur-xl animate-fade-in`}
+          className={`${GLASS_POPOVER} absolute right-0 top-full z-50 mt-3 max-w-[calc(100vw-2rem)] w-72 overflow-hidden rounded-[1.5rem] shadow-2xl animate-fade-in`}
         >
           <p
             id="saved-locations-title"
@@ -92,9 +92,9 @@ const Saved = ({ onCitySelect, savedLocations, removeLocation, currentId = null 
             Mis ubicaciones
           </p>
           {savedLocations.length > 0 ? (
-            <ul className="divide-y divide-white/10">
+            <ul>
               {savedLocations.map((loc) => (
-                <li key={loc.id} className="flex items-center justify-between gap-2 px-4 py-3 transition hover:bg-white/5">
+                <li key={loc.id} className="border-b border-white/10 last:border-b-0 flex items-center justify-between gap-2 px-4 py-3 transition hover:bg-white/10">
                   <button
                     type="button"
                     role="option"
