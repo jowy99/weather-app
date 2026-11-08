@@ -1,19 +1,3 @@
-const RAPIDAPI_KEY = import.meta.env.VITE_RAPIDAPI_KEY;
-const RAPIDAPI_HOST = import.meta.env.VITE_RAPIDAPI_HOST;
-
-export const hasRapidApiConfig = Boolean(RAPIDAPI_KEY && RAPIDAPI_HOST);
-
-// Configuración de opciones generales para fetch
-export const fetchOptions = {
-  method: "GET",
-  headers: hasRapidApiConfig
-    ? {
-        "x-rapidapi-key": RAPIDAPI_KEY,
-        "x-rapidapi-host": RAPIDAPI_HOST,
-      }
-    : {},
-};
-
 // Reverse geocoding con Nominatim (OpenStreetMap) — gratis, sin API key
 // Devuelve { name, region } — ambos en español gracias a accept-language=es
 export const reverseGeocode = async (latitude, longitude) => {
@@ -43,20 +27,15 @@ export const reverseGeocode = async (latitude, longitude) => {
   }
 };
 
-// Función para fetch de datos climáticos
+// Función para fetch de datos climáticos vía proxy del servidor
 export const fetchWeatherData = async (query = "Madrid") => {
-  if (!hasRapidApiConfig) {
-    throw new Error("RapidAPI configuration is missing.");
-  }
-
   const params = new URLSearchParams({
     q: query,
     days: "3",
     aqi: "yes",
     alerts: "yes",
   });
-  const url = `https://weatherapi-com.p.rapidapi.com/forecast.json?${params.toString()}`;
-  const response = await fetch(url, fetchOptions);
+  const response = await fetch(`/api/forecast?${params.toString()}`);
 
   if (!response.ok) {
     throw new Error(`Weather API request failed with status ${response.status}.`);
