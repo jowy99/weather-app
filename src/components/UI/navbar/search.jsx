@@ -1,126 +1,126 @@
 import PropTypes from "prop-types";
 import { useState, useEffect, useRef } from "react";
-import { fetchCitySuggestions } from "../../../services/fetcher.js";
-import Magnify from "../icons/magnifying.jsx";
+import { searchPlaces } from "../../../services/geocoding.js";
+import Magnifying from "../icons/magnifying.jsx";
+
+const PANEL_BG = "bg-[rgba(17,22,32,0.94)]";
 
 const Search = ({ onCitySelect, isOpen, onClose }) => {
   const [query, setQuery] = useState("");
   const [suggestions, setSuggestions] = useState([]);
-  const modalRef = useRef(null);
+  const [searching, setSearching] = useState(false);
+  const inputRef = useRef(null);
+  const triggerRef = useRef(null);
+  const searchRef = useRef(null);
 
-  // Manejar cambios en el input
   useEffect(() => {
-    const fetchSuggestions = async () => {
-      if (query.trim() !== "") {
-        try {
-          const cities = await fetchCitySuggestions(query);
-          setSuggestions(cities);
-        } catch (error) {
-          console.error("Error fetching city suggestions:", error);
-        }
-      } else {
-        setSuggestions([]);
-      }
-    };
-
-    const debounceTimer = setTimeout(fetchSuggestions, 300);
-    return () => clearTimeout(debounceTimer);
+    if (query.trim().length < 2) {
+      setSuggestions([]);
+      return undefined;
+    }
+    setSearching(true);
+    const timer = setTimeout(async () => {
+      setSuggestions(await searchPlaces(query));
+      setSearching(false);
+    }, 300);
+    return () => clearTimeout(timer);
   }, [query]);
 
-  // Cerrar modal al hacer clic fuera o al presionar ESC
   useEffect(() => {
+    if (!isOpen) return undefined;
+    triggerRef.current = document.activeElement;
+    const overlayEl = searchRef.current;
     const handleClickOutside = (event) => {
-      if (modalRef.current && !modalRef.current.contains(event.target)) {
-        onClose();
-      }
+      if (!overlayEl || event.target === overlayEl || !overlayEl.contains(event.target)) onClose();
     };
-
     const handleKeyDown = (event) => {
-      if (event.key === "Escape") {
-        onClose();
-      }
+      if (event.key === "Escape") onClose();
     };
-
-    if (isOpen) {
-      document.addEventListener("mousedown", handleClickOutside);
-      document.addEventListener("keydown", handleKeyDown);
-    }
-
+    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("keydown", handleKeyDown);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
       document.removeEventListener("keydown", handleKeyDown);
+      if (triggerRef.current && triggerRef.current.focus) {
+        triggerRef.current.focus();
+      }
     };
   }, [isOpen, onClose]);
 
-  // Manejar selección de una ciudad
-  const handleCitySelect = (cityName) => {
-    onCitySelect(cityName);
+  useEffect(() => {
+    if (isOpen && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [isOpen]);
+
+  const handleSelect = (place) => {
+    onCitySelect(place);
     setQuery("");
     setSuggestions([]);
     onClose();
   };
 
+  if (!isOpen) return null;
+
   return (
-    <>
-      {isOpen && (
-        <div className="fixed inset-0 z-50 flex items-start justify-center bg-slate-950/35 px-4 pt-20 backdrop-blur-xl dark:bg-black/50 sm:items-center sm:pt-0">
-          <div
-            ref={modalRef}
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="search-dialog-title"
-            className="w-full max-w-2xl"
+    <div
+      ref={searchRef}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="search-title"
+      className="fixed inset-0 z-50 flex items-start justify-center bg-black/50 px-4 pt-20 backdrop-blur-sm sm:items-center sm:pt-0 animate-fade-in"
+    >
+      <div className="w-full max-w-2xl">
+        <div className={`${PANEL_BG} flex items-center gap-3 rounded-[1.75rem] px-4 py-3 shadow-2xl border border-white/10 backdrop-blur-xl`}>
+          <Magnifying className="h-5 w-5 shrink-0 text-white/50" />
+          <input
+            ref={inputRef}
+            type="search"
+            id="search-title"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            aria-label="Ciudad"
+            placeholder="Buscar una ciudad"
+            className="min-w-0 flex-1 bg-transparent text-base font-medium text-white outline-none placeholder:text-white/40"
+          />
+          <button
+            type="button"
+            onClick={onClose}
+            aria-label="Cerrar búsqueda"
+            className="shrink-0 rounded-lg border border-white/10 bg-white/10 px-3 py-1 text-xs font-semibold text-white/60 transition hover:bg-white/15 hover:text-white/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
           >
-            <h2 id="search-dialog-title" className="sr-only">
-              Buscar ciudad
-            </h2>
-            <div className="glass-surface flex items-center gap-3 rounded-[1.75rem] px-4 py-3 shadow-2xl focus-within:ring-2 focus-within:ring-sky-300/70 dark:focus-within:ring-sky-400/40">
-              <Magnify className="w-6 h-6 text-slate-500 dark:text-slate-200" />
-              <input
-                type="text"
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                autoFocus
-                aria-label="Ciudad"
-                placeholder="Busca una ciudad"
-                className="min-w-0 flex-grow bg-transparent text-base font-medium text-slate-950 outline-none placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-500"
-              />
-              <button
-                type="button"
-                onClick={onClose}
-                aria-label="Cerrar búsqueda"
-                className="rounded-full border border-slate-300/50 bg-white/50 px-3 py-1 text-xs font-semibold text-slate-500 transition hover:bg-white/80 dark:border-white/10 dark:bg-white/10 dark:text-slate-300 dark:hover:bg-white/15"
-              >
-                esc
-              </button>
-            </div>
-
-            {suggestions.length > 0 && (
-              <ul className="glass-surface mt-4 overflow-hidden rounded-[1.5rem]">
-                {suggestions.map((suggestion, index) => (
-                  <li
-                    key={index}
-                    className="text-slate-800 dark:text-slate-100"
-                  >
-                    <button
-                      type="button"
-                      onClick={() => handleCitySelect(suggestion.name)}
-                      className="w-full px-5 py-3 text-left text-sm font-medium transition hover:bg-white/50 focus:outline-none focus:ring-2 focus:ring-sky-300/70 dark:hover:bg-white/10"
-                    >
-                      {suggestion.name}, {suggestion.region}
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            )}
-
-            {suggestions.length === 0 && query.trim() && (
-              <p className="mt-4 px-2 font-semibold text-rose-600 dark:text-rose-300">No cities found</p>
-            )}
-          </div>
+            esc
+          </button>
         </div>
-      )}
-    </>
+
+        {suggestions.length > 0 && (
+          <ul
+            className={`${PANEL_BG} mt-2 overflow-hidden rounded-[1.5rem] border border-white/10 shadow-xl backdrop-blur-xl`}
+            aria-label="Resultados"
+            role="listbox"
+          >
+            {suggestions.map((s) => (
+              <li key={s.id} role="option">
+                <button
+                  type="button"
+                  onClick={() => handleSelect(s)}
+                  className="w-full px-4 py-3 text-left transition hover:bg-white/5 focus:outline-none focus-visible:bg-white/10 focus-visible:ring-2 focus-visible:ring-white/10 focus-visible:ring-inset rounded-lg"
+                >
+                  <span className="block text-sm font-semibold text-white">{s.name}</span>
+                  <span className="block text-xs text-white/85">{s.region}</span>
+                </button>
+              </li>
+            ))}
+          </ul>
+        )}
+
+        <p className="mt-2 px-2 text-sm text-white/70" role="status">
+          {query.trim().length >= 2 && !searching && suggestions.length === 0
+            ? "No se han encontrado ciudades."
+            : ""}
+        </p>
+      </div>
+    </div>
   );
 };
 

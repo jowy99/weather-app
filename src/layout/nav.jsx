@@ -1,145 +1,102 @@
 import PropTypes from "prop-types";
-import { useState, useEffect } from "react";
-import Toggle from "../components/UI/navbar/toggle.jsx";
+import { useState, useEffect, useCallback } from "react";
 import Search from "../components/UI/navbar/search.jsx";
 import Saved from "../components/UI/navbar/saved.jsx";
 import SaveButton from "../components/UI/Buttons/SaveButton.jsx";
-import Magnify from "../components/UI/icons/magnifying.jsx";
-import AddLocationIcon from "../components/UI/icons/addLocation.jsx";
-import RemoveLocationIcon from "../components/UI/icons/removeLocation.jsx";
+import Magnifying from "../components/UI/icons/magnifying.jsx";
 
-const Navbar = ({
-  onCitySelect = () => {},
-  savedLocations = [],
-  addLocation = () => {},
-  removeLocation = () => {},
-  currentLocation = "",
-}) => {
+const APP_NAME = "WeatherApp";
+
+function LocateButton({ onClick, loading = false }) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      disabled={loading}
+      aria-label="Usar mi ubicación actual"
+      aria-busy={loading}
+      className="shrink-0 rounded-xl w-11 h-11 flex items-center justify-center text-white/80 transition hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent disabled:opacity-50"
+    >
+      <svg
+        viewBox="0 0 24 24"
+        className={`h-5 w-5 ${loading ? "motion-safe:animate-pulse" : ""}`}
+        fill="none"
+        stroke="currentColor"
+        strokeWidth={1.75}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        aria-hidden="true"
+      >
+        <circle cx="12" cy="12" r="4" />
+        <path d="M12 2v3M12 19v3M2 12h3M19 12h3" />
+      </svg>
+    </button>
+  );
+}
+LocateButton.propTypes = { onClick: PropTypes.func.isRequired, loading: PropTypes.bool };
+
+const Navbar = ({ onCitySelect, savedLocations, onSave, onRemove, isSaved, currentId = null, onUseLocation, loading = false }) => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const [hovered, setHovered] = useState(false);
   const [shortcutKey, setShortcutKey] = useState("");
+  const closeSearch = useCallback(() => setIsSearchOpen(false), []);
 
   useEffect(() => {
     const isMac = navigator.platform.toUpperCase().indexOf("MAC") >= 0;
-    setShortcutKey(isMac ? "⌘ K" : "Ctrl K");
-
+    setShortcutKey(isMac ? "⌘K" : "Ctrl+K");
     const handleKeyDown = (event) => {
-      if ((event.ctrlKey || event.metaKey) && event.key === "k") {
+      if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "k") {
         event.preventDefault();
-        setIsSearchOpen(true); // Abre el modal de búsqueda
+        setIsSearchOpen(true);
       }
     };
-
     document.addEventListener("keydown", handleKeyDown);
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, []);
 
-  const isSaved = savedLocations.includes(currentLocation);
-
   return (
     <nav className="sticky top-0 z-40 w-full py-2">
-      <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="relative flex h-16 items-center justify-between gap-3">
           {/* Logo */}
-          <h1 className="text-xl font-semibold tracking-tight text-slate-950 dark:text-white">
-            WeatherApp
-          </h1>
+          <h1 className="font-sans text-xl font-semibold tracking-tight text-white shrink-0">{APP_NAME}</h1>
 
-          {/* Contenido en pantallas grandes */}
-          <div className="hidden w-full lg:flex lg:items-center lg:justify-between">
-            <div className="relative flex justify-center flex-1">
-              {/* Input con iconos dentro */}
-              <div className="relative w-1/2">
-                <button
-                  type="button"
-                  aria-label="Abrir búsqueda de ciudad"
-                  onClick={() => setIsSearchOpen(true)}
-                  className="nav-control w-full rounded-full py-3 pl-12 pr-16 cursor-pointer text-left text-sm font-medium text-slate-500 transition focus:outline-none focus:ring-2 focus:ring-sky-300/70 dark:text-slate-200 dark:focus:ring-sky-400/40"
-                >
-                  Search city...
-                </button>
-
-                {/* Icono de lupa dentro del input */}
-                <Magnify className="absolute w-5 h-5 text-slate-400 transform -translate-y-1/2 pointer-events-none left-4 top-1/2 dark:text-slate-300" />
-
-                {/* Tecla de acceso rápido (⌘ K o Ctrl K) dentro del input */}
-                <span aria-hidden="true" className="shortcut-pill absolute right-4 top-1/2 transform -translate-y-1/2 text-xs px-2 py-0.5 rounded-full pointer-events-none">
-                  {shortcutKey}
-                </span>
-              </div>
-            </div>
-
-            <div className="flex items-center space-x-3">
-              <Toggle />
-              <Saved
-                onCitySelect={onCitySelect}
-                savedLocations={savedLocations}
-                removeLocation={removeLocation}
-              />
-              <SaveButton
-                isSaved={isSaved}
-                onSave={() => addLocation(currentLocation)}
-                onRemove={() => removeLocation(currentLocation)}
-              />
-            </div>
-          </div>
-          {/* Iconos en responsive */}
-          <div className="flex items-center justify-between p-1.5 space-x-3 rounded-full lg:hidden">
-            {/* Botón de búsqueda */}
+          {/* Desktop search bar — centrado */}
+          <div className="pointer-events-none absolute left-1/2 top-1/2 hidden -translate-x-1/2 -translate-y-1/2 justify-center lg:flex lg:pointer-events-auto">
             <button
               type="button"
               onClick={() => setIsSearchOpen(true)}
-              className="icon-button flex items-center justify-center p-2 text-slate-600 rounded-full focus:outline-none focus:ring-2 focus:ring-sky-300/70 dark:text-slate-200 dark:focus:ring-sky-400/40"
-              aria-label="Search"
+              aria-label="Buscar ciudad"
+              className="glass-pill flex items-center gap-3 w-full max-w-md rounded-2xl pl-5 pr-4 py-2.5 text-left text-sm font-medium cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
             >
-              <Magnify className="w-6 h-6" />
+              <Magnifying className="h-5 w-5 shrink-0 text-white/50" />
+              <span className="min-w-0 truncate text-white/50">Buscar ciudad…</span>
+              <span aria-hidden="true" className="ml-auto shrink-0 shortcut-pill rounded-lg px-2 py-0.5 text-xs font-semibold text-white/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60">
+                {shortcutKey}
+              </span>
             </button>
+          </div>
 
-            {/* Botón de tema */}
-            <Toggle />
-
-            {/* Menú de ubicaciones guardadas */}
-            <Saved
-              onCitySelect={onCitySelect}
-              savedLocations={savedLocations}
-              removeLocation={removeLocation}
-              isCompact
-            />
-
-            {/* Botón de guardar ubicación con animación */}
-            <button
-              type="button"
-              onClick={isSaved ? () => removeLocation(currentLocation) : () => addLocation(currentLocation)}
-              onMouseEnter={() => setHovered(true)}
-              onMouseLeave={() => setHovered(false)}
-              className={`flex items-center justify-center p-2 rounded-full transition-all focus:outline-none focus:ring-2 focus:ring-sky-300/70 dark:focus:ring-sky-400/40 ${
-                isSaved
-                  ? hovered
-                    ? "bg-rose-500 text-white shadow-lg shadow-rose-500/20 hover:bg-rose-600"
-                    : "bg-emerald-500 text-white shadow-lg shadow-emerald-500/20 hover:bg-emerald-600"
-                  : "bg-sky-500 text-white shadow-lg shadow-sky-500/20 hover:bg-sky-600"
-              }`}
-              aria-label={isSaved ? "Remove from saved locations" : "Save location"}
-            >
-              {isSaved ? (
-                hovered ? (
-                  <RemoveLocationIcon className="w-6 h-6" />
-                ) : (
-                  <AddLocationIcon className="w-6 h-6" />
-                )
-              ) : (
-                <AddLocationIcon className="w-6 h-6" />
-              )}
-            </button>
+          {/* Right side: unified action pill */}
+          <div className="flex items-center gap-2">
+            {/* Unified actions pill */}
+            <div className="actions-pill flex items-center">
+              {/* Mobile search button */}
+              <button
+                type="button"
+                onClick={() => setIsSearchOpen(true)}
+                aria-label="Buscar ciudad"
+                className="shrink-0 rounded-xl w-11 h-11 flex items-center justify-center text-white/80 transition hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent lg:hidden"
+              >
+                <Magnifying className="h-5 w-5" />
+              </button>
+              <LocateButton onClick={onUseLocation} loading={loading} />
+              <Saved onCitySelect={onCitySelect} savedLocations={savedLocations} removeLocation={onRemove} currentId={currentId} />
+              <SaveButton isSaved={isSaved} onSave={onSave} onRemove={() => currentId && onRemove(currentId)} />
+            </div>
           </div>
         </div>
 
-        {/* Modales */}
-        <Search
-          isOpen={isSearchOpen}
-          onClose={() => setIsSearchOpen(false)}
-          onCitySelect={onCitySelect}
-        />
+        <Search isOpen={isSearchOpen} onClose={closeSearch} onCitySelect={onCitySelect} />
       </div>
     </nav>
   );
@@ -148,9 +105,12 @@ const Navbar = ({
 Navbar.propTypes = {
   onCitySelect: PropTypes.func.isRequired,
   savedLocations: PropTypes.array.isRequired,
-  addLocation: PropTypes.func.isRequired,
-  removeLocation: PropTypes.func.isRequired,
-  currentLocation: PropTypes.string.isRequired,
+  onSave: PropTypes.func.isRequired,
+  onRemove: PropTypes.func.isRequired,
+  isSaved: PropTypes.bool.isRequired,
+  currentId: PropTypes.string,
+  onUseLocation: PropTypes.func.isRequired,
+  loading: PropTypes.bool,
 };
 
 export default Navbar;
