@@ -12,9 +12,37 @@ export default defineConfig({
       manifest,
       registerType: 'autoUpdate',
       injectRegister: 'script-defer',
-      selfDestroying: true,
       devOptions: {
         enabled: false,
+      },
+      workbox: {
+        globPatterns: ['**/*.{js,css,html,svg,png,ico,woff2,webmanifest}'],
+        maximumFileSizeToCacheInBytes: 5 * 1024 * 1024,
+        navigateFallback: '/index.html',
+        runtimeCaching: [
+          {
+            urlPattern: /^https:\/\/api\.open-meteo\.com\/.*/,
+            handler: 'NetworkFirst',
+            options: {
+              cacheName: 'open-meteo-runtime',
+              expiration: {
+                maxEntries: 50,
+                maxAgeSeconds: 7 * 24 * 60 * 60,
+              },
+            },
+          },
+          {
+            urlPattern: /^https:\/\/geocoding-api\.open-meteo\.com\/.*/,
+            handler: 'NetworkFirst',
+            options: {
+              cacheName: 'geocoding-runtime',
+              expiration: {
+                maxEntries: 20,
+                maxAgeSeconds: 7 * 24 * 60 * 60,
+              },
+            },
+          },
+        ],
       },
     }),
   ],
